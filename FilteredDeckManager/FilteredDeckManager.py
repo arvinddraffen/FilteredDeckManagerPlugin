@@ -8,7 +8,6 @@ class FilteredDeckManager:
     def _GetAllDecks(self):
         """Gets all decks from the deck due tree."""
         from google.protobuf import json_format
-        from types import SimpleNamespace
         self.allDecksList =[]
         for deck in self.mainWindow.col.sched.deck_due_tree().children:
             serialized = json_format.MessageToDict(deck)
@@ -38,6 +37,4 @@ class FilteredDeckManager:
         import json
         outFile = "C:\\Users\\goat1\\Documents\\output.json"    # prompt from FileDialog
         with open(outFile, "w") as output:
-            # serialized = json_format.MessageToJson(self._filteredDecks)
-            # output.write(serialized)
             output.write(json.dumps([deck.AsDict() for deck in self.filteredDecksList]))

@@ -16,7 +16,6 @@ def testFunction() -> None:
     # showInfo("Card count: %d" % manager.CardCount())
     manager._GetAllDecks()
     manager.WriteToFile()
-    import json
     decks = "Filtered Decks List:\n"
     for deck in manager.FilteredDecksList:
         decks = f"{decks}\n{deck.Name}"
