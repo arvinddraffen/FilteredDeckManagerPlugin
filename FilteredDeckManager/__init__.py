@@ -14,9 +14,13 @@ manager = FilteredDeckManager(mw)
 def testFunction() -> None:
     # show a message box
     # showInfo("Card count: %d" % manager.CardCount())
-    manager._InitializeFilteredDecksList()
+    manager._GetAllDecks()
     manager.WriteToFile()
-    showInfo(str(manager.FilteredDecksList))
+    import json
+    decks = "Filtered Decks List:\n"
+    for deck in manager.FilteredDecksList:
+        decks = f"{decks}\n{deck.Name}"
+    showInfo(decks)
 
 # create a new menu item, "test"
 action = QAction("Filtered Deck Manager", mw)
