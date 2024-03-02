@@ -1,1 +1,2 @@
-FilteredDeckManager/__pycache__
+FilteredDeckManager/__pycache__/*
+venv/*
