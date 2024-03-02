@@ -13,6 +13,7 @@ class Deck:
         self.reviewUncapped: int
         self.totalInDeck: int
         self.totalIncludingChildren: int
+        self.isFiltered: bool
 
     @property
     def DeckId(self) -> int:
@@ -133,3 +134,12 @@ class Deck:
     def TotalIncludingChildren(self, totalIncludingChildren: int) -> None:
         """Sets the total number of cards, including children cards, in this `Deck`."""
         self.totalIncludingChildren = totalIncludingChildren
+    
+    @property
+    def IsFiltered(self) -> bool:
+        """Represents whether this `Deck` is a filtered deck."""
+        return self.isFiltered
+    
+    @IsFiltered.setter
+    def IsFiltered(self, isFiltered: bool) -> None:
+        self.isFiltered = isFiltered
