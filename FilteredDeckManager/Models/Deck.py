@@ -14,6 +14,7 @@ class Deck:
         self.totalInDeck: int = None
         self.totalIncludingChildren: int = None
         self.isFiltered: bool = None
+        self.searchTerms: list[str] = None
 
     @property
     def DeckId(self) -> int:
@@ -142,7 +143,29 @@ class Deck:
     
     @IsFiltered.setter
     def IsFiltered(self, isFiltered: bool) -> None:
+        """Sets whether or not this `Deck` is a filtered deck."""
         self.isFiltered = isFiltered
+    
+    @property
+    def SearchTerms(self) -> list[str]:
+        """
+        The search terms that are used to select cards for generation of a filtered deck.
+        This property is only valid is this `Deck` is a filtered deck, and should not otherwise be used.
+        Also of note, Anki supports 1 or 2 search terms only (two filters) for generation of a filtered deck.
+        """
+        return self.searchTerms
+
+    @SearchTerms.setter
+    def SearchTerms(self, searchTerms: list[str]) -> None:
+        """
+        Sets the search terms to use for generating this filtered deck.
+
+        Parameters
+        -----------
+        searchTerms: str
+            A list of search queries to be used to create this filtered deck. Minimum length 1, maximum length 2.
+        """
+        self.searchTerms = searchTerms
     
     def AsDict(self) -> dict:
         """
