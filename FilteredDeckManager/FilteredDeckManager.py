@@ -8,11 +8,12 @@ class FilteredDeckManager:
     def _GetAllDecks(self):
         """Gets all decks from the deck due tree."""
         from google.protobuf import json_format
-        self.allDecksList =[]
+        self.allDecksList = []
         for deck in self.mainWindow.col.sched.deck_due_tree().children:
             serialized = json_format.MessageToDict(deck)
             newDeck = Deck.Deck()
-            newDeck.FromDict(serialized)
+            newDeck.FromDict(serialized, haveSearchTerms=False)
+            newDeck.SearchTerms = []
             self.allDecksList.append(newDeck)
         self._InitializeFilteredDecksList()
 
@@ -25,6 +26,10 @@ class FilteredDeckManager:
         self.filteredDecksList = []
         for deck in self.allDecksList:
             if deck.IsFiltered:
+                deckConfig = self.mainWindow.col.sched.get_or_create_filtered_deck(deck_id=int(deck.DeckId)).config
+                if len(deckConfig.search_terms) == 1 or len(deckConfig.search_terms) == 2:
+                    for term in deckConfig.search_terms:
+                        deck.searchTerms.append(term.search)
                 self.filteredDecksList.append(deck)
 
     @property
