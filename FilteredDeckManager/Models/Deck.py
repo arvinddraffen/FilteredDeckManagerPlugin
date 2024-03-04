@@ -171,6 +171,7 @@ class Deck:
         """
         Serializes this `Deck` as a dictionary.
         """
+        import json
         deckAsDict = {}
 
         if self.DeckId is not None:
@@ -199,14 +200,16 @@ class Deck:
         # is only included if the deck is filtered (aka not present but as "False")
         if self.IsFiltered:
             deckAsDict["filtered"] = self.IsFiltered
+            deckAsDict["search_terms"] = json.dumps(self.SearchTerms)
         
         return deckAsDict
     
-    def FromDict(self, deck: dict) -> None:
+    def FromDict(self, deck: dict, haveSearchTerms:bool = True) -> None:
         """
         Reads in a `Deck` serialized as a dictionary and populates corresponding properties.
         Each deck does not necessarily contain every property when serialized by Anki, so validate existence before assignment.
         """
+        import json
         if "deckId" in deck:
             self.DeckId = deck["deckId"]
         if "name" in deck:
@@ -233,6 +236,8 @@ class Deck:
             self.TotalIncludingChildren = deck["totalIncludingChildren"]
         if "filtered" in deck:
             self.IsFiltered = deck["filtered"]
+            if haveSearchTerms:
+                self.SearchTerms = json.loads(deck["search_terms"])
         else:
             self.IsFiltered = False
 
