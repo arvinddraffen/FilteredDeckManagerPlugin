@@ -42,4 +42,4 @@ class FilteredDeckManager:
         import json
         outFile = "C:\\Users\\goat1\\Documents\\output.json"    # prompt from FileDialog
         with open(outFile, "w") as output:
-            output.write(json.dumps([deck.AsDict() for deck in self.filteredDecksList]))
+            json.dump([deck.AsDict()for deck in self.FilteredDecksList], output, indent=2)
