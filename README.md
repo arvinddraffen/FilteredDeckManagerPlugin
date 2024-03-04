@@ -3,8 +3,6 @@ Provides an interface to import and export filtered decks.
 
 ## Roadmap
 ### Short-Term Core Features
-* Get the filter that makes the filtered deck, and write to file.
-    * For writing to file, add newlines.
 * Work on UI
     * Multi-selectable list of filtered decks (right now just writes out everything)
     * Toggle for appending `(is:new OR is:due)` to final command
