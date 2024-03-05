@@ -9,7 +9,9 @@ from aqt.qt import *
 # be called when the menu item is activated.
 
 from .FilteredDeckManager import FilteredDeckManager
+from .UI import MainUI
 manager = FilteredDeckManager(mw)
+dialogUI = MainUI.MainUI()
 
 def testFunction() -> None:
     # show a message box
@@ -19,7 +21,8 @@ def testFunction() -> None:
     decks = "Filtered Decks List:\n"
     for deck in manager.FilteredDecksList:
         decks = f"{decks}\n{deck.Name}"
-    showInfo(decks)
+    # showInfo(decks)
+    dialogUI.exec()
 
 # create a new menu item, "test"
 action = QAction("Filtered Deck Manager", mw)
@@ -27,3 +30,4 @@ action = QAction("Filtered Deck Manager", mw)
 qconnect(action.triggered, testFunction)
 # and add it to the tools menu
 mw.form.menuTools.addAction(action)
+from aqt.qt import QMetaObject
