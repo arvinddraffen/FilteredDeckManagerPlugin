@@ -51,10 +51,12 @@ class Ui_Dialog(object):
         self.verticalLayout_2 = QVBoxLayout(self.groupBox)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.tableWidgetFilteredDecks = QTableWidget(self.groupBox)
-        if (self.tableWidgetFilteredDecks.columnCount() < 1):
-            self.tableWidgetFilteredDecks.setColumnCount(1)
+        if (self.tableWidgetFilteredDecks.columnCount() < 2):
+            self.tableWidgetFilteredDecks.setColumnCount(2)
         __qtablewidgetitem = QTableWidgetItem()
         self.tableWidgetFilteredDecks.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        __qtablewidgetitem1 = QTableWidgetItem()
+        self.tableWidgetFilteredDecks.setHorizontalHeaderItem(1, __qtablewidgetitem1)
         self.tableWidgetFilteredDecks.setObjectName(u"tableWidgetFilteredDecks")
 
         self.verticalLayout_2.addWidget(self.tableWidgetFilteredDecks)
@@ -174,6 +176,8 @@ class Ui_Dialog(object):
         self.groupBox.setTitle(QCoreApplication.translate("Dialog", u"Filtered Decks", None))
         ___qtablewidgetitem = self.tableWidgetFilteredDecks.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("Dialog", u"Deck Name", None));
+        ___qtablewidgetitem1 = self.tableWidgetFilteredDecks.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("Dialog", u"Deck ID", None));
         self.groupBoxImport.setTitle(QCoreApplication.translate("Dialog", u"Import", None))
         self.buttonImport.setText(QCoreApplication.translate("Dialog", u"Import", None))
         self.groupBoxExport.setTitle(QCoreApplication.translate("Dialog", u"Export", None))

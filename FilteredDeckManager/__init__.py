@@ -11,17 +11,18 @@ from aqt.qt import *
 from .FilteredDeckManager import FilteredDeckManager
 from .UI import MainUI
 manager = FilteredDeckManager(mw)
-dialogUI = MainUI.MainUI()
+dialogUI = MainUI.MainUI(mw)
 
 def testFunction() -> None:
     # show a message box
     # showInfo("Card count: %d" % manager.CardCount())
     manager._GetAllDecks()
     manager.WriteToFile()
-    decks = "Filtered Decks List:\n"
-    for deck in manager.FilteredDecksList:
-        decks = f"{decks}\n{deck.Name}"
+    # decks = "Filtered Decks List:\n"
+    # for deck in manager.FilteredDecksList:
+    #     decks = f"{decks}\n{deck.Name}"
     # showInfo(decks)
+    dialogUI.PopulateDecks(manager.FilteredDecksList)
     dialogUI.exec()
 
 # create a new menu item, "test"
@@ -30,4 +31,3 @@ action = QAction("Filtered Deck Manager", mw)
 qconnect(action.triggered, testFunction)
 # and add it to the tools menu
 mw.form.menuTools.addAction(action)
-from aqt.qt import QMetaObject
