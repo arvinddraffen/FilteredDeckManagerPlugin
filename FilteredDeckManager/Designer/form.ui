@@ -50,6 +50,9 @@
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
              <widget class="QTableWidget" name="tableWidgetFilteredDecks">
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectItems</enum>
+              </property>
               <column>
                <property name="text">
                 <string>Deck Name</string>

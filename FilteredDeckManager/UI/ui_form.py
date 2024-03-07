@@ -15,12 +15,12 @@
 #     QFont, QFontDatabase, QGradient, QIcon,
 #     QImage, QKeySequence, QLinearGradient, QPainter,
 #     QPalette, QPixmap, QRadialGradient, QTransform)
-# from PySide6.QtWidgets import (QApplication, QDialog, QGroupBox, QHBoxLayout,
-#     QHeaderView, QLabel, QPushButton, QSizePolicy,
-#     QSpacerItem, QTabWidget, QTableWidget, QTableWidgetItem,
-#     QVBoxLayout, QWidget)
+# from PySide6.QtWidgets import (QAbstractItemView, QApplication, QDialog, QGroupBox,
+#     QHBoxLayout, QHeaderView, QLabel, QPushButton,
+#     QSizePolicy, QSpacerItem, QTabWidget, QTableWidget,
+#     QTableWidgetItem, QVBoxLayout, QWidget)
 
-from aqt.qt import QTabWidget, QVBoxLayout, QLabel, QWidget, QFont, QGroupBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QCoreApplication, QMetaObject
+from aqt.qt import QTabWidget, QVBoxLayout, QLabel, QWidget, QFont, QGroupBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QCoreApplication, QMetaObject, QAbstractItemView
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
