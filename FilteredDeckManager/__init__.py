@@ -10,19 +10,20 @@ from aqt.qt import *
 
 from .FilteredDeckManager import FilteredDeckManager
 from .UI import MainUI
-manager = FilteredDeckManager(mw)
+# manager = FilteredDeckManager(mw)
 dialogUI = MainUI.MainUI(mw)
 
 def testFunction() -> None:
     # show a message box
     # showInfo("Card count: %d" % manager.CardCount())
-    manager._GetAllDecks()
-    manager.WriteToFile()
+    # manager._GetAllDecks()
+    # manager.WriteToFile("C:\\Users\\goat1\\Documents\\output.json")
     # decks = "Filtered Decks List:\n"
     # for deck in manager.FilteredDecksList:
     #     decks = f"{decks}\n{deck.Name}"
     # showInfo(decks)
-    dialogUI.PopulateDecks(manager.FilteredDecksList)
+    # dialogUI.PopulateDecks(manager.FilteredDecksList)
+    dialogUI.InitializeData()
     dialogUI.exec()
 
 # create a new menu item, "test"

@@ -37,9 +37,8 @@ class FilteredDeckManager:
         """Gets the list of filtered decks."""
         return self.filteredDecksList
     
-    def WriteToFile(self) -> None:
+    def WriteToFile(self, filepath: str, decks: list[Deck.Deck]) -> None:
         """Write list of filtered decks to file."""
         import json
-        outFile = "C:\\Users\\goat1\\Documents\\output.json"    # prompt from FileDialog
-        with open(outFile, "w") as output:
-            json.dump([deck.AsDict()for deck in self.FilteredDecksList], output, indent=2)
+        with open(filepath, "w") as output:
+            json.dump([deck.AsDict()for deck in decks], output, indent=2)
