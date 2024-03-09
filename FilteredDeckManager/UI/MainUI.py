@@ -34,11 +34,28 @@ class MainUI(QDialog):
     
     def SetupSignalsSlots(self):
         # self.ui.pushButtonExportAll.clicked.connect(self.WriteToFile)
-        qconnect(self.ui.pushButtonExportAll.clicked, self.WriteToFile)
+        qconnect(self.ui.pushButtonExportAll.clicked, self.WriteAllToFile)
+        qconnect(self.ui.buttonExportSelected.clicked, self.WriteSelectedToFile)
 
-    def WriteToFile(self):
+    def WriteAllToFile(self):
         filepath = QFileDialog.getSaveFileName(filter="JSON (*.json)")[0]
         self.manager.WriteToFile(filepath, self.manager.FilteredDecksList)
+    
+    def WriteSelectedToFile(self):
+        """
+        Writes the filtered decks selected in the filtered decks table to the file specified by the user.
+        """
+        selectedItems = self.ui.tableWidgetFilteredDecks.selectedIndexes()
+        selectedItemsList = [x.row() for x in selectedItems]    # list format of every row, column selected
+        selectedItemsListNonDuplicated = selectedItemsList[::2] # we only care about the row, so get every other element (since we have entire-row selection, where each row represents a Deck)
+        selectedDeckIds = [int(self.ui.tableWidgetFilteredDecks.item(deckIndex, 1).text()) for deckIndex in selectedItemsListNonDuplicated]
+        selectedDecks = []
+        for deckId in selectedDeckIds:
+            decks = [deck for deck in self.manager.FilteredDecksList if (int(deck.DeckId) == int(deckId))]
+            selectedDecks.append(decks[0])
+        filepath = QFileDialog.getSaveFileName(filter="JSON (*.json)")[0]
+        self.manager.WriteToFile(filepath, selectedDecks)
+        
 
 if __name__ == "__main__":
     pass
