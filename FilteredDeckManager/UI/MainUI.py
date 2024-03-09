@@ -18,12 +18,17 @@ class MainUI(QDialog):
         self.manager = FilteredDeckManager(self.mainWindow)
         self.SetupSignalsSlots()
     
-    def InitializeData(self):
+    def InitializeData(self) -> None:
+        """
+        Triggers query of filtered decks from the Anki API using the `FilteredDeckManager`.
+        """
         self.manager._GetAllDecks()
-        # self.manager.WriteToFile("C:\\Users\\goat1\\Documents\\output.json")
         self.PopulateDecks(self.manager.FilteredDecksList)
 
-    def PopulateDecks(self, filteredDecksList):
+    def PopulateDecks(self, filteredDecksList: list) ->None:
+        """
+        Populates the central table with a list of filtered decks (Deck Name and Deck Id).
+        """
         self.ui.tableWidgetFilteredDecks.setRowCount(len(filteredDecksList))
         i = 0
         for filteredDeck in filteredDecksList:
@@ -32,16 +37,21 @@ class MainUI(QDialog):
             i += 1
         self.ui.tableWidgetFilteredDecks.update()
     
-    def SetupSignalsSlots(self):
-        # self.ui.pushButtonExportAll.clicked.connect(self.WriteToFile)
+    def SetupSignalsSlots(self) -> None:
+        """
+        Sets up Qt signals/slots for `MainUI`, primarily for button presses..
+        """
         qconnect(self.ui.pushButtonExportAll.clicked, self.WriteAllToFile)
         qconnect(self.ui.buttonExportSelected.clicked, self.WriteSelectedToFile)
 
-    def WriteAllToFile(self):
+    def WriteAllToFile(self) -> None:
+        """
+        Writes all filtered decks in the filtered decks table to the file specified by the user.
+        """
         filepath = QFileDialog.getSaveFileName(filter="JSON (*.json)")[0]
         self.manager.WriteToFile(filepath, self.manager.FilteredDecksList)
     
-    def WriteSelectedToFile(self):
+    def WriteSelectedToFile(self) -> None:
         """
         Writes the filtered decks selected in the filtered decks table to the file specified by the user.
         """
