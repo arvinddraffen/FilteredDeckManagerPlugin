@@ -77,10 +77,6 @@ class MainUI(QDialog):
         """
         Creates a filtered deck from the imported decks list.
         """
-        from anki.collection import SearchNode
-        from anki.decks import FilteredDeckConfig
-        from anki.scheduler import FilteredDeckForUpdate
-        from aqt.operations.scheduling import add_or_update_filtered_deck
         importedFilteredDecksList = self.manager.StagedFilteredDecksList
         for deck in importedFilteredDecksList:
             newDeckId = self.mainWindow.col.decks.new_filtered(deck.Name)
