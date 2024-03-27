@@ -8,25 +8,13 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-# from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-#     QMetaObject, QObject, QPoint, QRect,
-#     QSize, QTime, QUrl, Qt)
-# from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-#     QFont, QFontDatabase, QGradient, QIcon,
-#     QImage, QKeySequence, QLinearGradient, QPainter,
-#     QPalette, QPixmap, QRadialGradient, QTransform)
-# from PySide6.QtWidgets import (QAbstractItemView, QApplication, QDialog, QGroupBox,
-#     QHBoxLayout, QHeaderView, QLabel, QPushButton,
-#     QSizePolicy, QSpacerItem, QTabWidget, QTableWidget,
-#     QTableWidgetItem, QVBoxLayout, QWidget)
-
 from aqt.qt import QTabWidget, QVBoxLayout, QLabel, QWidget, QFont, QGroupBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QCoreApplication, QMetaObject, QAbstractItemView
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(605, 641)
+        Dialog.resize(605, 872)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.labelTitle = QLabel(Dialog)
@@ -44,8 +32,6 @@ class Ui_Dialog(object):
         self.tabOptions.setObjectName(u"tabOptions")
         self.verticalLayout_4 = QVBoxLayout(self.tabOptions)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.tabOptionsLayout = QVBoxLayout()
-        self.tabOptionsLayout.setObjectName(u"tabOptionsLayout")
         self.groupBox = QGroupBox(self.tabOptions)
         self.groupBox.setObjectName(u"groupBox")
         self.verticalLayout_2 = QVBoxLayout(self.groupBox)
@@ -62,28 +48,41 @@ class Ui_Dialog(object):
         self.verticalLayout_2.addWidget(self.tableWidgetFilteredDecks)
 
 
-        self.tabOptionsLayout.addWidget(self.groupBox)
+        self.verticalLayout_4.addWidget(self.groupBox)
 
         self.groupBoxImport = QGroupBox(self.tabOptions)
         self.groupBoxImport.setObjectName(u"groupBoxImport")
-        self.horizontalLayout_4 = QHBoxLayout(self.groupBoxImport)
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.groupBoxImportLayout = QHBoxLayout()
-        self.groupBoxImportLayout.setObjectName(u"groupBoxImportLayout")
+        self.verticalLayout_3 = QVBoxLayout(self.groupBoxImport)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.groupBoxImportSublayout1 = QHBoxLayout()
+        self.groupBoxImportSublayout1.setObjectName(u"groupBoxImportSublayout1")
         self.buttonImport = QPushButton(self.groupBoxImport)
         self.buttonImport.setObjectName(u"buttonImport")
 
-        self.groupBoxImportLayout.addWidget(self.buttonImport)
+        self.groupBoxImportSublayout1.addWidget(self.buttonImport)
 
         self.groupBoxImportSpacer = QSpacerItem(398, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.groupBoxImportLayout.addItem(self.groupBoxImportSpacer)
+        self.groupBoxImportSublayout1.addItem(self.groupBoxImportSpacer)
 
 
-        self.horizontalLayout_4.addLayout(self.groupBoxImportLayout)
+        self.verticalLayout_3.addLayout(self.groupBoxImportSublayout1)
+
+        self.tableWidgetStagedForImportFilteredDecks = QTableWidget(self.groupBoxImport)
+        if (self.tableWidgetStagedForImportFilteredDecks.columnCount() < 3):
+            self.tableWidgetStagedForImportFilteredDecks.setColumnCount(3)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(0, __qtablewidgetitem2)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(1, __qtablewidgetitem3)
+        __qtablewidgetitem4 = QTableWidgetItem()
+        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(2, __qtablewidgetitem4)
+        self.tableWidgetStagedForImportFilteredDecks.setObjectName(u"tableWidgetStagedForImportFilteredDecks")
+
+        self.verticalLayout_3.addWidget(self.tableWidgetStagedForImportFilteredDecks)
 
 
-        self.tabOptionsLayout.addWidget(self.groupBoxImport)
+        self.verticalLayout_4.addWidget(self.groupBoxImport)
 
         self.groupBoxExport = QGroupBox(self.tabOptions)
         self.groupBoxExport.setObjectName(u"groupBoxExport")
@@ -114,10 +113,7 @@ class Ui_Dialog(object):
         self.horizontalLayout_5.addLayout(self.groupBoxExportLayout)
 
 
-        self.tabOptionsLayout.addWidget(self.groupBoxExport)
-
-
-        self.verticalLayout_4.addLayout(self.tabOptionsLayout)
+        self.verticalLayout_4.addWidget(self.groupBoxExport)
 
         self.tabWidget.addTab(self.tabOptions, "")
         self.tabAbout = QWidget()
@@ -180,6 +176,12 @@ class Ui_Dialog(object):
         ___qtablewidgetitem1.setText(QCoreApplication.translate("Dialog", u"Deck ID", None));
         self.groupBoxImport.setTitle(QCoreApplication.translate("Dialog", u"Import", None))
         self.buttonImport.setText(QCoreApplication.translate("Dialog", u"Import", None))
+        ___qtablewidgetitem2 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(0)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("Dialog", u"Deck Name", None));
+        ___qtablewidgetitem3 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(1)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("Dialog", u"Estimated Card Count", None));
+        ___qtablewidgetitem4 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(2)
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("Dialog", u"Tags", None));
         self.groupBoxExport.setTitle(QCoreApplication.translate("Dialog", u"Export", None))
         self.buttonExportSelected.setText(QCoreApplication.translate("Dialog", u"Export Selected", None))
         self.pushButtonExportAll.setText(QCoreApplication.translate("Dialog", u"Export All", None))

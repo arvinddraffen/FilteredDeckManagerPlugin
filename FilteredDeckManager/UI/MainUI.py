@@ -14,6 +14,7 @@ class MainUI(QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.tableWidgetFilteredDecks.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.ui.tableWidgetStagedForImportFilteredDecks.hide()
         self.mainWindow = mw
         self.manager = FilteredDeckManager(self.mainWindow)
         self.SetupSignalsSlots()
@@ -43,6 +44,12 @@ class MainUI(QDialog):
         """
         qconnect(self.ui.pushButtonExportAll.clicked, self.WriteAllToFile)
         qconnect(self.ui.buttonExportSelected.clicked, self.WriteSelectedToFile)
+        qconnect(self.ui.buttonImport.clicked, self.ImportFromFile)
+    
+    def ImportFromFile(self) -> None:
+        filepath = QFileDialog.getOpenFileName(self, caption="Import", filter="JSON (*.json)")[0]
+        self.ui.tableWidgetStagedForImportFilteredDecks.show()
+        print(filepath)
 
     def WriteAllToFile(self) -> None:
         """
