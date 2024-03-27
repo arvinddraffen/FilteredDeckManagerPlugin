@@ -1,5 +1,6 @@
 from .ui_form import Ui_Dialog
 from ..FilteredDeckManager import FilteredDeckManager
+from ..Models import Deck
 
 from aqt.qt import QDialog
 from aqt.qt import QTableWidgetItem
@@ -45,6 +46,8 @@ class MainUI(QDialog):
         qconnect(self.ui.pushButtonExportAll.clicked, self.WriteAllToFile)
         qconnect(self.ui.buttonExportSelected.clicked, self.WriteSelectedToFile)
         qconnect(self.ui.buttonImport.clicked, self.ImportFromFile)
+        qconnect(self.ui.buttonOkay.clicked, self.CreateFilteredDecksFromImported)
+        qconnect(self.ui.buttonExit.clicked, self.ExitDialog)
     
     def ImportFromFile(self) -> None:
         """
@@ -69,6 +72,25 @@ class MainUI(QDialog):
             i += 1
         self.ui.tableWidgetStagedForImportFilteredDecks.update()
         self.ui.tableWidgetStagedForImportFilteredDecks.show()
+    
+    def CreateFilteredDecksFromImported(self) -> None:
+        from anki.collection import SearchNode
+        from anki.decks import FilteredDeckConfig
+        from anki.scheduler import FilteredDeckForUpdate
+        from aqt.operations.scheduling import add_or_update_filtered_deck
+        importedFilteredDecksList = self.manager.StagedFilteredDecksList
+        for deck in importedFilteredDecksList:
+            newDeckId = self.mainWindow.col.decks.new_filtered(deck.Name)
+            newDeck = self.mainWindow.col.decks.get(newDeckId)
+            newDeck["terms"] = [[deck.SearchTerms[0], 9999, 6]]
+            self.mainWindow.col.decks.save(newDeck)
+            self.mainWindow.col.sched.rebuildDyn(newDeckId)
+        self.mainWindow.reset()
+        self.ExitDialog()
+                
+
+    def ExitDialog(self) -> None:
+        self.close()
 
     def WriteAllToFile(self) -> None:
         """

@@ -38,6 +38,10 @@ class FilteredDeckManager:
         """Gets the list of filtered decks."""
         return self.filteredDecksList
     
+    @property
+    def StagedFilteredDecksList(self) -> list[Deck.Deck]:
+        return self.stagedFilteredDecksList
+    
     def WriteToFile(self, filepath: str, decks: list[Deck.Deck]) -> None:
         """Write list of filtered decks to file."""
         import json
@@ -61,4 +65,6 @@ class FilteredDeckManager:
                 # will need to check for identical decks here
                 importedDecks.append(deck)
         
+        self.stagedFilteredDecksList = importedDecks
         return importedDecks
+    
