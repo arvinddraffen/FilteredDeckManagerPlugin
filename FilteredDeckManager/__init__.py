@@ -9,17 +9,22 @@ from aqt.qt import *
 # be called when the menu item is activated.
 
 from .FilteredDeckManager import FilteredDeckManager
-manager = FilteredDeckManager(mw)
+from .UI import MainUI
+# manager = FilteredDeckManager(mw)
+dialogUI = MainUI.MainUI(mw)
 
 def testFunction() -> None:
     # show a message box
     # showInfo("Card count: %d" % manager.CardCount())
-    manager._GetAllDecks()
-    manager.WriteToFile()
-    decks = "Filtered Decks List:\n"
-    for deck in manager.FilteredDecksList:
-        decks = f"{decks}\n{deck.Name}"
-    showInfo(decks)
+    # manager._GetAllDecks()
+    # manager.WriteToFile("C:\\Users\\goat1\\Documents\\output.json")
+    # decks = "Filtered Decks List:\n"
+    # for deck in manager.FilteredDecksList:
+    #     decks = f"{decks}\n{deck.Name}"
+    # showInfo(decks)
+    # dialogUI.PopulateDecks(manager.FilteredDecksList)
+    dialogUI.InitializeData()
+    dialogUI.exec()
 
 # create a new menu item, "test"
 action = QAction("Filtered Deck Manager", mw)
