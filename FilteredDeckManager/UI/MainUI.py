@@ -47,9 +47,28 @@ class MainUI(QDialog):
         qconnect(self.ui.buttonImport.clicked, self.ImportFromFile)
     
     def ImportFromFile(self) -> None:
+        """
+        Import filtered decks from file and populate in UI.
+        """
         filepath = QFileDialog.getOpenFileName(self, caption="Import", filter="JSON (*.json)")[0]
-        self.ui.tableWidgetStagedForImportFilteredDecks.show()
         print(filepath)
+        importedFilteredDecksList = self.manager.ReadFromFile(filepath)
+        self.PopulateImportedFilteredDecks(importedFilteredDecksList)
+    
+    def PopulateImportedFilteredDecks(self, importedFilteredDecksList: list) -> None:
+        """
+        Populates imported filtered decks into the corresponding QTableWidget.
+        """
+        self.ui.tableWidgetStagedForImportFilteredDecks.setRowCount(len(importedFilteredDecksList))
+        i = 0
+        for importedFilteredDeck in importedFilteredDecksList:
+            print(f"Adding: {importedFilteredDeck.Name}")
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 0, QTableWidgetItem(importedFilteredDeck.Name))
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 1, QTableWidgetItem(str(20)))
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 2, QTableWidgetItem(importedFilteredDeck.SearchTerms[0]))
+            i += 1
+        self.ui.tableWidgetStagedForImportFilteredDecks.update()
+        self.ui.tableWidgetStagedForImportFilteredDecks.show()
 
     def WriteAllToFile(self) -> None:
         """

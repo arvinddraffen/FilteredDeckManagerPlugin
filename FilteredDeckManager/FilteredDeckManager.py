@@ -2,6 +2,7 @@ from .Models import Deck
 
 class FilteredDeckManager:
     from anki.collection import Collection
+    
     def __init__(self, mw) -> None:
         self.mainWindow = mw
 
@@ -42,3 +43,22 @@ class FilteredDeckManager:
         import json
         with open(filepath, "w") as output:
             json.dump([deck.AsDict()for deck in decks], output, indent=2)
+    
+    def ReadFromFile(self, filepath: str) -> list[Deck.Deck]:
+        """Reads list of filtered decks from file."""
+        import os.path
+        if not os.path.exists(filepath):
+            return  # invalid file
+    
+        import json
+        importedDecks = []
+        with open(filepath, "r") as inFile:
+            data = json.load(inFile)
+            for deckJson in data:
+                deck = Deck.Deck()
+                deck.FromDict(deckJson, haveSearchTerms=True)
+                print(f"Imported deck: {deck.Name}")
+                # will need to check for identical decks here
+                importedDecks.append(deck)
+        
+        return importedDecks
