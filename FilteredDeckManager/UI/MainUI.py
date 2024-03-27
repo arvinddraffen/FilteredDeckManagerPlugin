@@ -74,6 +74,9 @@ class MainUI(QDialog):
         self.ui.tableWidgetStagedForImportFilteredDecks.show()
     
     def CreateFilteredDecksFromImported(self) -> None:
+        """
+        Creates a filtered deck from the imported decks list.
+        """
         from anki.collection import SearchNode
         from anki.decks import FilteredDeckConfig
         from anki.scheduler import FilteredDeckForUpdate
@@ -90,6 +93,9 @@ class MainUI(QDialog):
                 
 
     def ExitDialog(self) -> None:
+        """
+        Closes the Filtered Deck Manager window.
+        """
         self.close()
 
     def WriteAllToFile(self) -> None:
