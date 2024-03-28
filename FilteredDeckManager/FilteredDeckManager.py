@@ -67,4 +67,40 @@ class FilteredDeckManager:
         
         self.stagedFilteredDecksList = importedDecks
         return importedDecks
-    
+
+    def IsUnique(self, deck: Deck.Deck, comparisonList: list[Deck.Deck], importList = False) -> bool:
+        """
+        Compares Deck name and Deck search terms to assess uniqueness.
+        If both match, the deck is not considered unique.
+        """
+        uniqueNameCheck = [x for x in comparisonList if (deck.Name == x.Name)]
+        if importList:
+            deckNameUnique = len(uniqueNameCheck) <= 1     # will have one match of  if checking against the import list
+        else:
+            deckNameUnique = len(uniqueNameCheck) == 0
+
+        searchQueryUnique = True
+        # now search through search queries to assess uniqueness
+        # may not be the fastest approach
+        deck1Terms = []
+        if len(deck.SearchTerms) == 1:
+            deck1Terms = deck.SearchTerms
+        else:
+            for term in deck.SearchTerms:
+                deck1Terms += term
+        
+        numberOfMatches = 0
+        for d in comparisonList:
+            deck2Terms = []
+            if len(d.SearchTerms) == 1:
+                deck2Terms = d.SearchTerms
+            else:
+                for term in d.SearchTerms:
+                    deck2Terms += term
+            if sorted(deck1Terms) == sorted(deck2Terms):
+                numberOfMatches += 1
+        
+        if numberOfMatches > 1:     # will have 1 match of itself
+            searchQueryUnique = False
+
+        return deckNameUnique and searchQueryUnique

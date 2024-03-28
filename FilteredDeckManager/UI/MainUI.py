@@ -6,6 +6,7 @@ from aqt.qt import QDialog
 from aqt.qt import QTableWidgetItem
 from aqt.qt import QAbstractItemView
 from aqt.qt import QFileDialog
+from aqt.qt import QMessageBox
 
 from aqt.utils import qconnect
 
@@ -79,14 +80,23 @@ class MainUI(QDialog):
         """
         importedFilteredDecksList = self.manager.StagedFilteredDecksList
         for deck in importedFilteredDecksList:
-            newDeckId = self.mainWindow.col.decks.new_filtered(deck.Name)
-            newDeck = self.mainWindow.col.decks.get(newDeckId)
-            newDeck["terms"] = [[deck.SearchTerms[0], 9999, 6]]
-            self.mainWindow.col.decks.save(newDeck)
-            self.mainWindow.col.sched.rebuildDyn(newDeckId)
+            if self.manager.IsUnique(deck, importedFilteredDecksList, importList=True):
+                if self.manager.IsUnique(deck, self.manager.FilteredDecksList):
+                    newDeckId = self.mainWindow.col.decks.new_filtered(deck.Name)
+                    newDeck = self.mainWindow.col.decks.get(newDeckId)
+                    newDeck["terms"] = [[deck.SearchTerms[0], 9999, 6]]
+                    self.mainWindow.col.decks.save(newDeck)
+                    self.mainWindow.col.sched.rebuildDyn(newDeckId)
+                else:
+                    QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists and will be skipped.")
+            else:
+                QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists and will be skipped.")
+        self.CleanupAndExit()
+
+    def CleanupAndExit(self):
         self.mainWindow.reset()
+        self.InitializeData()
         self.ExitDialog()
-                
 
     def ExitDialog(self) -> None:
         """
