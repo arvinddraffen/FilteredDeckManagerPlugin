@@ -93,7 +93,10 @@ class MainUI(QDialog):
                 QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists and will be skipped.")
         self.CleanupAndExit()
 
-    def CleanupAndExit(self):
+    def CleanupAndExit(self) -> None:
+        """
+        After filtered deck import, update MainWindow and FilteredDecks list for add-on.
+        """
         self.mainWindow.reset()
         self.InitializeData()
         self.ExitDialog()
