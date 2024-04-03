@@ -110,6 +110,11 @@
             </column>
             <column>
              <property name="text">
+              <string>Include Suspended Cards</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
               <string>Tags</string>
              </property>
             </column>

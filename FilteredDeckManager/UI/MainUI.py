@@ -1,3 +1,4 @@
+from aqt import QCheckBox
 from .ui_form import Ui_Dialog
 from ..FilteredDeckManager import FilteredDeckManager
 from ..Models import Deck
@@ -67,9 +68,11 @@ class MainUI(QDialog):
         i = 0
         for importedFilteredDeck in importedFilteredDecksList:
             print(f"Adding: {importedFilteredDeck.Name}")
+            checkbox = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 0, QTableWidgetItem(importedFilteredDeck.Name))
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 1, QTableWidgetItem(str(20)))
-            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 2, QTableWidgetItem(importedFilteredDeck.SearchTerms[0]))
+            self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 2, checkbox)
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 3, QTableWidgetItem(importedFilteredDeck.SearchTerms[0]))
             i += 1
         self.ui.tableWidgetStagedForImportFilteredDecks.update()
         self.ui.tableWidgetStagedForImportFilteredDecks.show()
@@ -79,9 +82,13 @@ class MainUI(QDialog):
         Creates a filtered deck from the imported decks list.
         """
         importedFilteredDecksList = self.manager.StagedFilteredDecksList
+        i = 0
         for deck in importedFilteredDecksList:
             if self.manager.IsUnique(deck, importedFilteredDecksList, importList=True):
                 if self.manager.IsUnique(deck, self.manager.FilteredDecksList):
+                    if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,2).isChecked():
+                        cardsToUnsuspend = self.mainWindow.col.find_cards(deck.SearchTerms[0])
+                        self.mainWindow.col.sched.unsuspend_cards(cardsToUnsuspend)
                     newDeckId = self.mainWindow.col.decks.new_filtered(deck.Name)
                     newDeck = self.mainWindow.col.decks.get(newDeckId)
                     newDeck["terms"] = [[deck.SearchTerms[0], 9999, 6]]
@@ -91,6 +98,7 @@ class MainUI(QDialog):
                     QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists and will be skipped.")
             else:
                 QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists and will be skipped.")
+            i += 1
         self.CleanupAndExit()
 
     def CleanupAndExit(self) -> None:
