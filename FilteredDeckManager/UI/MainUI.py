@@ -69,8 +69,9 @@ class MainUI(QDialog):
         for importedFilteredDeck in importedFilteredDecksList:
             print(f"Adding: {importedFilteredDeck.Name}")
             checkbox = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
+            numberOfCards = len(self.mainWindow.col.find_cards(importedFilteredDeck.SearchTerms[0]))
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 0, QTableWidgetItem(importedFilteredDeck.Name))
-            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 1, QTableWidgetItem(str(20)))
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 1, QTableWidgetItem(str(numberOfCards)))
             self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 2, checkbox)
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 3, QTableWidgetItem(importedFilteredDeck.SearchTerms[0]))
             i += 1
