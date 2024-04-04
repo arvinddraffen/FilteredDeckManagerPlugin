@@ -50,6 +50,37 @@ class Ui_Dialog(object):
 
         self.verticalLayout_4.addWidget(self.groupBox)
 
+        self.groupBoxExport = QGroupBox(self.tabOptions)
+        self.groupBoxExport.setObjectName(u"groupBoxExport")
+        self.horizontalLayout_5 = QHBoxLayout(self.groupBoxExport)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.groupBoxExportLayout = QHBoxLayout()
+        self.groupBoxExportLayout.setObjectName(u"groupBoxExportLayout")
+        self.buttonExportSelected = QPushButton(self.groupBoxExport)
+        self.buttonExportSelected.setObjectName(u"buttonExportSelected")
+
+        self.groupBoxExportLayout.addWidget(self.buttonExportSelected)
+
+        self.groupBoxExportSpacer1 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.groupBoxExportLayout.addItem(self.groupBoxExportSpacer1)
+
+        self.pushButtonExportAll = QPushButton(self.groupBoxExport)
+        self.pushButtonExportAll.setObjectName(u"pushButtonExportAll")
+
+        self.groupBoxExportLayout.addWidget(self.pushButtonExportAll)
+
+        self.groupBoxExportSpacer2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.groupBoxExportLayout.addItem(self.groupBoxExportSpacer2)
+
+        self.groupBoxExportLayout.setStretch(3, 4)
+
+        self.horizontalLayout_5.addLayout(self.groupBoxExportLayout)
+
+
+        self.verticalLayout_4.addWidget(self.groupBoxExport)
+
         self.groupBoxImport = QGroupBox(self.tabOptions)
         self.groupBoxImport.setObjectName(u"groupBoxImport")
         self.verticalLayout_3 = QVBoxLayout(self.groupBoxImport)
@@ -87,37 +118,6 @@ class Ui_Dialog(object):
 
 
         self.verticalLayout_4.addWidget(self.groupBoxImport)
-
-        self.groupBoxExport = QGroupBox(self.tabOptions)
-        self.groupBoxExport.setObjectName(u"groupBoxExport")
-        self.horizontalLayout_5 = QHBoxLayout(self.groupBoxExport)
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.groupBoxExportLayout = QHBoxLayout()
-        self.groupBoxExportLayout.setObjectName(u"groupBoxExportLayout")
-        self.buttonExportSelected = QPushButton(self.groupBoxExport)
-        self.buttonExportSelected.setObjectName(u"buttonExportSelected")
-
-        self.groupBoxExportLayout.addWidget(self.buttonExportSelected)
-
-        self.groupBoxExportSpacer1 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.groupBoxExportLayout.addItem(self.groupBoxExportSpacer1)
-
-        self.pushButtonExportAll = QPushButton(self.groupBoxExport)
-        self.pushButtonExportAll.setObjectName(u"pushButtonExportAll")
-
-        self.groupBoxExportLayout.addWidget(self.pushButtonExportAll)
-
-        self.groupBoxExportSpacer2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.groupBoxExportLayout.addItem(self.groupBoxExportSpacer2)
-
-        self.groupBoxExportLayout.setStretch(3, 4)
-
-        self.horizontalLayout_5.addLayout(self.groupBoxExportLayout)
-
-
-        self.verticalLayout_4.addWidget(self.groupBoxExport)
 
         self.tabWidget.addTab(self.tabOptions, "")
         self.tabAbout = QWidget()
@@ -178,6 +178,9 @@ class Ui_Dialog(object):
         ___qtablewidgetitem.setText(QCoreApplication.translate("Dialog", u"Deck Name", None));
         ___qtablewidgetitem1 = self.tableWidgetFilteredDecks.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("Dialog", u"Deck ID", None));
+        self.groupBoxExport.setTitle(QCoreApplication.translate("Dialog", u"Export", None))
+        self.buttonExportSelected.setText(QCoreApplication.translate("Dialog", u"Export Selected", None))
+        self.pushButtonExportAll.setText(QCoreApplication.translate("Dialog", u"Export All", None))
         self.groupBoxImport.setTitle(QCoreApplication.translate("Dialog", u"Import", None))
         self.buttonImport.setText(QCoreApplication.translate("Dialog", u"Import", None))
         ___qtablewidgetitem2 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(0)
@@ -190,9 +193,6 @@ class Ui_Dialog(object):
         ___qtablewidgetitem5.setText(QCoreApplication.translate("Dialog", u"Append (is:new OR is:due)?", None));
         ___qtablewidgetitem6 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(4)
         ___qtablewidgetitem6.setText(QCoreApplication.translate("Dialog", u"Tags", None));
-        self.groupBoxExport.setTitle(QCoreApplication.translate("Dialog", u"Export", None))
-        self.buttonExportSelected.setText(QCoreApplication.translate("Dialog", u"Export Selected", None))
-        self.pushButtonExportAll.setText(QCoreApplication.translate("Dialog", u"Export All", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabOptions), QCoreApplication.translate("Dialog", u"Options", None))
         self.labelWrittenBy.setText(QCoreApplication.translate("Dialog", u"Written by Arvind Draffen, 2024", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabAbout), QCoreApplication.translate("Dialog", u"About", None))
