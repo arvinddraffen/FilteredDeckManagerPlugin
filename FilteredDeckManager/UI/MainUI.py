@@ -152,15 +152,16 @@ class MainUI(QDialog):
         """
         Slot for updating the name of a filtered deck based on user input into the Deck Name column.
         """
-        print(f"Filtered deck name set to: {self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()}")
-        tempDeck = Deck.Deck()
-        tempDeck.Name = self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()
-        if self.manager.IsUnique(tempDeck, self.manager.FilteredDecksList, False, True) and self.manager.IsUnique(tempDeck, self.manager.StagedFilteredDecksList, True, True):
-            self.manager.StagedFilteredDecksList[row].Name = self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()
-        else:
-            QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck name {tempDeck.Name} is not unique.")
-            self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).setText(self.manager.StagedFilteredDecksList[row].Name)
-            print(f"Updating filtered deck name to: {self.manager.StagedFilteredDecksList[row].Name}")
+        if column == Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.DECK_NAME:
+            print(f"Filtered deck name set to: {self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()}")
+            tempDeck = Deck.Deck()
+            tempDeck.Name = self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()
+            if self.manager.IsUnique(tempDeck, self.manager.FilteredDecksList, False, True) and self.manager.IsUnique(tempDeck, self.manager.StagedFilteredDecksList, True, True):
+                self.manager.StagedFilteredDecksList[row].Name = self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()
+            else:
+                QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck name {tempDeck.Name} is not unique.")
+                self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).setText(self.manager.StagedFilteredDecksList[row].Name)
+                print(f"Updating filtered deck name to: {self.manager.StagedFilteredDecksList[row].Name}")
 
     def GetSelectedFilteredDecks(self) -> list[int]:
         """
