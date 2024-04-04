@@ -105,12 +105,17 @@
             </column>
             <column>
              <property name="text">
-              <string>Total # of Cards (including suspended)</string>
+              <string>Total # of Cards</string>
              </property>
             </column>
             <column>
              <property name="text">
               <string>Include Suspended Cards</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Append (is:new OR is:due)?</string>
              </property>
             </column>
             <column>

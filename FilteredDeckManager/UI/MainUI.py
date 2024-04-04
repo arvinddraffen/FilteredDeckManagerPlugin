@@ -68,12 +68,14 @@ class MainUI(QDialog):
         i = 0
         for importedFilteredDeck in importedFilteredDecksList:
             print(f"Adding: {importedFilteredDeck.Name}")
-            checkbox = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
+            checkboxUnsuspended = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
+            checkboxAppendNewDue = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
             numberOfCards = len(self.mainWindow.col.find_cards(importedFilteredDeck.SearchTerms[0]))
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 0, QTableWidgetItem(importedFilteredDeck.Name))
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 1, QTableWidgetItem(str(numberOfCards)))
-            self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 2, checkbox)
-            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 3, QTableWidgetItem(importedFilteredDeck.SearchTerms[0]))
+            self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 2, checkboxUnsuspended)
+            self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 3, checkboxAppendNewDue)
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 4, QTableWidgetItem(importedFilteredDeck.SearchTerms[0]))
             i += 1
         self.ui.tableWidgetStagedForImportFilteredDecks.update()
         self.ui.tableWidgetStagedForImportFilteredDecks.show()
@@ -87,12 +89,17 @@ class MainUI(QDialog):
         for deck in importedFilteredDecksList:
             if self.manager.IsUnique(deck, importedFilteredDecksList, importList=True):
                 if self.manager.IsUnique(deck, self.manager.FilteredDecksList):
+                    searchTerm = deck.searchTerms[0]
+                    if len(deck.SearchTerms) == 2:
+                        searchTerm = f"{searchTerm} {deck.SearchTerms[1]}"
                     if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,2).isChecked():
                         cardsToUnsuspend = self.mainWindow.col.find_cards(deck.SearchTerms[0])
                         self.mainWindow.col.sched.unsuspend_cards(cardsToUnsuspend)
+                    if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,3).isChecked():
+                        searchTerm = f"{searchTerm} (is:new OR is:due)"
                     newDeckId = self.mainWindow.col.decks.new_filtered(deck.Name)
                     newDeck = self.mainWindow.col.decks.get(newDeckId)
-                    newDeck["terms"] = [[deck.SearchTerms[0], 9999, 6]]
+                    newDeck["terms"] = [[searchTerm, 9999, 6]]
                     self.mainWindow.col.decks.save(newDeck)
                     self.mainWindow.col.sched.rebuildDyn(newDeckId)
                 else:
