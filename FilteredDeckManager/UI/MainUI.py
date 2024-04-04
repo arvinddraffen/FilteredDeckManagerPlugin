@@ -53,6 +53,7 @@ class MainUI(QDialog):
         qconnect(self.ui.buttonImport.clicked, self.ImportFromFile)
         qconnect(self.ui.buttonOkay.clicked, self.CreateFilteredDecksFromImported)
         qconnect(self.ui.buttonExit.clicked, self.ExitDialog)
+
     def ImportFromFile(self) -> None:
         """
         Import filtered decks from file and populate in UI.
@@ -72,6 +73,8 @@ class MainUI(QDialog):
             print(f"Adding: {importedFilteredDeck.Name}")
             checkboxUnsuspended = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
             checkboxAppendNewDue = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
+            qconnect(checkboxUnsuspended.stateChanged, self.UpdateImportedFilteredDecks)
+            qconnect(checkboxAppendNewDue.stateChanged, self.UpdateImportedFilteredDecks)
             numberOfCards = len(self.mainWindow.col.find_cards(importedFilteredDeck.SearchTerms[0]))
             searchTermsItem = QTableWidgetItem(importedFilteredDeck.SearchTerms[0])
             searchTermsItem.setFlags(searchTermsItem.flags() & ~Qt.ItemFlag.ItemIsEditable)
@@ -112,6 +115,29 @@ class MainUI(QDialog):
                 QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists and will be skipped.")
             i += 1
         self.CleanupAndExit()
+    
+    def UpdateImportedFilteredDecks(self):
+        """
+        Signal for updating data in the staged filtered decks table on toggle of option checkboxes.
+        """
+        for row in range(self.ui.tableWidgetStagedForImportFilteredDecks.rowCount()):
+            query = self.manager.StagedFilteredDecksList[row].SearchTermsAsString
+            includeSuspended = not self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(row,2).isChecked()
+            includeNewDue = self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(row,3).isChecked()
+            updatedCardCount = self.CalculateCardCount(query, includeSuspended, includeNewDue)
+            print(f"Setting card count to {updatedCardCount}")
+            self.ui.tableWidgetStagedForImportFilteredDecks.item(row,1).setText(str(updatedCardCount))
+
+    def CalculateCardCount(self, query: str, includeSuspended: bool, includeNewDue: bool) -> int:
+        """
+        Calculates the card count based on a given search term and additional modifiers of suspended or only new/due cards.
+        """
+        if not includeSuspended:
+            query = f"{query} (-is:suspended)"
+        if includeNewDue:
+            query = f"{query} (is:new OR is:due)"
+        
+        return len(self.mainWindow.col.find_cards(query))
 
     def CleanupAndExit(self) -> None:
         """
