@@ -63,7 +63,7 @@ class MainUI(QDialog):
         importedFilteredDecksList = self.manager.ReadFromFile(filepath)
         self.PopulateImportedFilteredDecks(importedFilteredDecksList)
     
-    def PopulateImportedFilteredDecks(self, importedFilteredDecksList: list) -> None:
+    def PopulateImportedFilteredDecks(self, importedFilteredDecksList: list[Deck.Deck]) -> None:
         """
         Populates imported filtered decks into the corresponding QTableWidget.
         """
@@ -75,7 +75,7 @@ class MainUI(QDialog):
             checkboxAppendNewDue = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
             qconnect(checkboxUnsuspended.stateChanged, self.UpdateImportedFilteredDecks)
             qconnect(checkboxAppendNewDue.stateChanged, self.UpdateImportedFilteredDecks)
-            numberOfCards = len(self.mainWindow.col.find_cards(importedFilteredDeck.SearchTerms[0]))
+            numberOfCards = self.CalculateCardCount(importedFilteredDeck.SearchTermsAsString, False, False)
             searchTermsItem = QTableWidgetItem(importedFilteredDeck.SearchTerms[0])
             searchTermsItem.setFlags(searchTermsItem.flags() & ~Qt.ItemFlag.ItemIsEditable)
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 0, QTableWidgetItem(importedFilteredDeck.Name))
