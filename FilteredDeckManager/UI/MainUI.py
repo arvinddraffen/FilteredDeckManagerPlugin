@@ -121,6 +121,11 @@ class MainUI(QDialog):
         """
         Closes the Filtered Deck Manager window.
         """
+        self.ui.tableWidgetFilteredDecks.clearContents()
+        self.ui.tableWidgetFilteredDecks.setRowCount(0)
+        self.ui.tableWidgetStagedForImportFilteredDecks.clearContents()
+        self.ui.tableWidgetStagedForImportFilteredDecks.setRowCount(0)
+        self.ui.tableWidgetStagedForImportFilteredDecks.hide()
         self.close()
 
     def WriteAllToFile(self) -> None:
