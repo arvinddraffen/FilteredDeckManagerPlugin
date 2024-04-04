@@ -167,6 +167,14 @@ class Deck:
         """
         self.searchTerms = searchTerms
     
+    @property
+    def SearchTermsAsString(self) -> str:
+        terms = f"{self.searchTerms[0]}"
+        if len(self.searchTerms) == 2:
+            terms = f"{terms} {self.searchTerms[1]}"
+        
+        return terms
+    
     def AsDict(self) -> dict:
         """
         Serializes this `Deck` as a dictionary.

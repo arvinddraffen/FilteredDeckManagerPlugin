@@ -2,6 +2,7 @@ from .Models import Deck
 
 class FilteredDeckManager:
     from anki.collection import Collection
+    
     def __init__(self, mw) -> None:
         self.mainWindow = mw
 
@@ -37,8 +38,72 @@ class FilteredDeckManager:
         """Gets the list of filtered decks."""
         return self.filteredDecksList
     
+    @property
+    def StagedFilteredDecksList(self) -> list[Deck.Deck]:
+        return self.stagedFilteredDecksList
+    
     def WriteToFile(self, filepath: str, decks: list[Deck.Deck]) -> None:
         """Write list of filtered decks to file."""
         import json
         with open(filepath, "w") as output:
             json.dump([deck.AsDict()for deck in decks], output, indent=2)
+    
+    def ReadFromFile(self, filepath: str) -> list[Deck.Deck]:
+        """Reads list of filtered decks from file."""
+        import os.path
+        if not os.path.exists(filepath):
+            return  # invalid file
+    
+        import json
+        importedDecks = []
+        with open(filepath, "r") as inFile:
+            data = json.load(inFile)
+            for deckJson in data:
+                deck = Deck.Deck()
+                deck.FromDict(deckJson, haveSearchTerms=True)
+                print(f"Imported deck: {deck.Name}")
+                # will need to check for identical decks here
+                importedDecks.append(deck)
+        
+        self.stagedFilteredDecksList = importedDecks
+        return importedDecks
+
+    def IsUnique(self, deck: Deck.Deck, comparisonList: list[Deck.Deck], importList = False, checkNameOnly = False) -> bool:
+        """
+        Compares Deck name and Deck search terms to assess uniqueness.
+        If both match, the deck is not considered unique.
+        """
+        uniqueNameCheck = [x for x in comparisonList if (deck.Name == x.Name)]
+        if importList:
+            deckNameUnique = len(uniqueNameCheck) <= 1     # will have one match of  if checking against the import list
+        else:
+            deckNameUnique = len(uniqueNameCheck) == 0
+        
+        if checkNameOnly:
+            return deckNameUnique
+
+        searchQueryUnique = True
+        # now search through search queries to assess uniqueness
+        # may not be the fastest approach
+        deck1Terms = []
+        if len(deck.SearchTerms) == 1:
+            deck1Terms = deck.SearchTerms
+        else:
+            for term in deck.SearchTerms:
+                deck1Terms += term
+        
+        numberOfMatches = 0
+        for d in comparisonList:
+            deck2Terms = []
+            if len(d.SearchTerms) == 1:
+                deck2Terms = d.SearchTerms
+            else:
+                for term in d.SearchTerms:
+                    deck2Terms += term
+            if sorted(deck1Terms) == sorted(deck2Terms):
+                numberOfMatches += 1
+        
+        if numberOfMatches > 1:     # will have 1 match of itself
+            searchQueryUnique = False
+
+        return deckNameUnique and searchQueryUnique

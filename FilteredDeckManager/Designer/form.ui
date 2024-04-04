@@ -67,58 +67,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBoxImport">
-         <property name="title">
-          <string>Import</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <layout class="QHBoxLayout" name="groupBoxImportSublayout1">
-            <item>
-             <widget class="QPushButton" name="buttonImport">
-              <property name="text">
-               <string>Import</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="groupBoxImportSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>398</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QTableWidget" name="tableWidgetStagedForImportFilteredDecks">
-            <column>
-             <property name="text">
-              <string>Deck Name</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Estimated Card Count</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Tags</string>
-             </property>
-            </column>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <widget class="QGroupBox" name="groupBoxExport">
          <property name="title">
           <string>Export</string>
@@ -167,6 +115,68 @@
              </spacer>
             </item>
            </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBoxImport">
+         <property name="title">
+          <string>Import</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <layout class="QHBoxLayout" name="groupBoxImportSublayout1">
+            <item>
+             <widget class="QPushButton" name="buttonImport">
+              <property name="text">
+               <string>Import</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="groupBoxImportSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>398</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="tableWidgetStagedForImportFilteredDecks">
+            <column>
+             <property name="text">
+              <string>Deck Name</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Total # of Cards</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Include Suspended Cards</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Append (is:new OR is:due)?</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Tags</string>
+             </property>
+            </column>
+           </widget>
           </item>
          </layout>
         </widget>
