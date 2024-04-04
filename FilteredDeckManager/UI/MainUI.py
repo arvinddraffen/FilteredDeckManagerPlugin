@@ -38,8 +38,8 @@ class MainUI(QDialog):
         self.ui.tableWidgetFilteredDecks.setRowCount(len(filteredDecksList))
         i = 0
         for filteredDeck in filteredDecksList:
-            self.ui.tableWidgetFilteredDecks.setItem(i, 0, QTableWidgetItem(filteredDeck.Name))
-            self.ui.tableWidgetFilteredDecks.setItem(i, 1, QTableWidgetItem(filteredDeck.DeckId))
+            self.ui.tableWidgetFilteredDecks.setItem(i, 1, QTableWidgetItem(filteredDeck.Name))
+            self.ui.tableWidgetFilteredDecks.setItem(i, 2, QTableWidgetItem(filteredDeck.DeckId))
             i += 1
         self.ui.tableWidgetFilteredDecks.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.ui.tableWidgetFilteredDecks.update()
@@ -79,11 +79,11 @@ class MainUI(QDialog):
             numberOfCards = self.CalculateCardCount(importedFilteredDeck.SearchTermsAsString, False, False)
             searchTermsItem = QTableWidgetItem(importedFilteredDeck.SearchTerms[0])
             searchTermsItem.setFlags(searchTermsItem.flags() & ~Qt.ItemFlag.ItemIsEditable)
-            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 0, QTableWidgetItem(importedFilteredDeck.Name))
-            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 1, QTableWidgetItem(str(numberOfCards)))
-            self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 2, checkboxUnsuspended)
-            self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 3, checkboxAppendNewDue)
-            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 4, searchTermsItem)
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 1, QTableWidgetItem(importedFilteredDeck.Name))
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 2, QTableWidgetItem(str(numberOfCards)))
+            self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 3, checkboxUnsuspended)
+            self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 4, checkboxAppendNewDue)
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 5, searchTermsItem)
             i += 1
         qconnect(self.ui.tableWidgetStagedForImportFilteredDecks.cellChanged, self.UpdateFilteredDeckName)
         self.ui.tableWidgetStagedForImportFilteredDecks.update()
@@ -101,10 +101,10 @@ class MainUI(QDialog):
                     searchTerm = deck.searchTerms[0]
                     if len(deck.SearchTerms) == 2:
                         searchTerm = f"{searchTerm} {deck.SearchTerms[1]}"
-                    if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,2).isChecked():
+                    if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,3).isChecked():
                         cardsToUnsuspend = self.mainWindow.col.find_cards(deck.SearchTerms[0])
                         self.mainWindow.col.sched.unsuspend_cards(cardsToUnsuspend)
-                    if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,3).isChecked():
+                    if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,4).isChecked():
                         searchTerm = f"{searchTerm} (is:new OR is:due)"
                     newDeckId = self.mainWindow.col.decks.new_filtered(deck.Name)
                     newDeck = self.mainWindow.col.decks.get(newDeckId)
@@ -124,10 +124,10 @@ class MainUI(QDialog):
         """
         for row in range(self.ui.tableWidgetStagedForImportFilteredDecks.rowCount()):
             query = self.manager.StagedFilteredDecksList[row].SearchTermsAsString
-            includeSuspended = self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(row,2).isChecked()
-            includeNewDue = self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(row,3).isChecked()
+            includeSuspended = self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(row,3).isChecked()
+            includeNewDue = self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(row,4).isChecked()
             updatedCardCount = self.CalculateCardCount(query, includeSuspended, includeNewDue)
-            self.ui.tableWidgetStagedForImportFilteredDecks.item(row,1).setText(str(updatedCardCount))
+            self.ui.tableWidgetStagedForImportFilteredDecks.item(row,2).setText(str(updatedCardCount))
 
     def CalculateCardCount(self, query: str, includeSuspended: bool, includeNewDue: bool) -> int:
         """
@@ -188,7 +188,7 @@ class MainUI(QDialog):
         selectedItems = self.ui.tableWidgetFilteredDecks.selectedIndexes()
         selectedItemsList = [x.row() for x in selectedItems]    # list format of every row, column selected
         selectedItemsListNonDuplicated = selectedItemsList[::2] # we only care about the row, so get every other element (since we have entire-row selection, where each row represents a Deck)
-        selectedDeckIds = [int(self.ui.tableWidgetFilteredDecks.item(deckIndex, 1).text()) for deckIndex in selectedItemsListNonDuplicated]
+        selectedDeckIds = [int(self.ui.tableWidgetFilteredDecks.item(deckIndex, 2).text()) for deckIndex in selectedItemsListNonDuplicated]
         selectedDecks = []
         for deckId in selectedDeckIds:
             decks = [deck for deck in self.manager.FilteredDecksList if (int(deck.DeckId) == int(deckId))]

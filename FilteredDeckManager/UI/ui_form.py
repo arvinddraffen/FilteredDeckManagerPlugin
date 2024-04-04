@@ -14,7 +14,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(605, 872)
+        Dialog.resize(692, 872)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.labelTitle = QLabel(Dialog)
@@ -37,12 +37,14 @@ class Ui_Dialog(object):
         self.verticalLayout_2 = QVBoxLayout(self.groupBox)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.tableWidgetFilteredDecks = QTableWidget(self.groupBox)
-        if (self.tableWidgetFilteredDecks.columnCount() < 2):
-            self.tableWidgetFilteredDecks.setColumnCount(2)
+        if (self.tableWidgetFilteredDecks.columnCount() < 3):
+            self.tableWidgetFilteredDecks.setColumnCount(3)
         __qtablewidgetitem = QTableWidgetItem()
         self.tableWidgetFilteredDecks.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
         self.tableWidgetFilteredDecks.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        self.tableWidgetFilteredDecks.setHorizontalHeaderItem(2, __qtablewidgetitem2)
         self.tableWidgetFilteredDecks.setObjectName(u"tableWidgetFilteredDecks")
 
         self.verticalLayout_2.addWidget(self.tableWidgetFilteredDecks)
@@ -100,18 +102,20 @@ class Ui_Dialog(object):
         self.verticalLayout_3.addLayout(self.groupBoxImportSublayout1)
 
         self.tableWidgetStagedForImportFilteredDecks = QTableWidget(self.groupBoxImport)
-        if (self.tableWidgetStagedForImportFilteredDecks.columnCount() < 5):
-            self.tableWidgetStagedForImportFilteredDecks.setColumnCount(5)
-        __qtablewidgetitem2 = QTableWidgetItem()
-        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(0, __qtablewidgetitem2)
+        if (self.tableWidgetStagedForImportFilteredDecks.columnCount() < 6):
+            self.tableWidgetStagedForImportFilteredDecks.setColumnCount(6)
         __qtablewidgetitem3 = QTableWidgetItem()
-        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(1, __qtablewidgetitem3)
+        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(0, __qtablewidgetitem3)
         __qtablewidgetitem4 = QTableWidgetItem()
-        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(2, __qtablewidgetitem4)
+        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(1, __qtablewidgetitem4)
         __qtablewidgetitem5 = QTableWidgetItem()
-        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(3, __qtablewidgetitem5)
+        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(2, __qtablewidgetitem5)
         __qtablewidgetitem6 = QTableWidgetItem()
-        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(4, __qtablewidgetitem6)
+        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(3, __qtablewidgetitem6)
+        __qtablewidgetitem7 = QTableWidgetItem()
+        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(4, __qtablewidgetitem7)
+        __qtablewidgetitem8 = QTableWidgetItem()
+        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(5, __qtablewidgetitem8)
         self.tableWidgetStagedForImportFilteredDecks.setObjectName(u"tableWidgetStagedForImportFilteredDecks")
 
         self.verticalLayout_3.addWidget(self.tableWidgetStagedForImportFilteredDecks)
@@ -175,24 +179,28 @@ class Ui_Dialog(object):
         self.labelTitle.setText(QCoreApplication.translate("Dialog", u"Filtered Deck Manager", None))
         self.groupBox.setTitle(QCoreApplication.translate("Dialog", u"Filtered Decks", None))
         ___qtablewidgetitem = self.tableWidgetFilteredDecks.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("Dialog", u"Deck Name", None));
+        ___qtablewidgetitem.setText(QCoreApplication.translate("Dialog", u"Select", None));
         ___qtablewidgetitem1 = self.tableWidgetFilteredDecks.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("Dialog", u"Deck ID", None));
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("Dialog", u"Deck Name", None));
+        ___qtablewidgetitem2 = self.tableWidgetFilteredDecks.horizontalHeaderItem(2)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("Dialog", u"Deck ID", None));
         self.groupBoxExport.setTitle(QCoreApplication.translate("Dialog", u"Export", None))
         self.buttonExportSelected.setText(QCoreApplication.translate("Dialog", u"Export Selected", None))
         self.pushButtonExportAll.setText(QCoreApplication.translate("Dialog", u"Export All", None))
         self.groupBoxImport.setTitle(QCoreApplication.translate("Dialog", u"Import", None))
-        self.buttonImport.setText(QCoreApplication.translate("Dialog", u"Import", None))
-        ___qtablewidgetitem2 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(0)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("Dialog", u"Deck Name", None));
-        ___qtablewidgetitem3 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(1)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("Dialog", u"Total # of Cards", None));
-        ___qtablewidgetitem4 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(2)
-        ___qtablewidgetitem4.setText(QCoreApplication.translate("Dialog", u"Include Suspended Cards", None));
-        ___qtablewidgetitem5 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(3)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("Dialog", u"Append (is:new OR is:due)?", None));
-        ___qtablewidgetitem6 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(4)
-        ___qtablewidgetitem6.setText(QCoreApplication.translate("Dialog", u"Tags", None));
+        self.buttonImport.setText(QCoreApplication.translate("Dialog", u"Open File", None))
+        ___qtablewidgetitem3 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(0)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("Dialog", u"Select", None));
+        ___qtablewidgetitem4 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(1)
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("Dialog", u"Deck Name", None));
+        ___qtablewidgetitem5 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(2)
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("Dialog", u"Total # of Cards", None));
+        ___qtablewidgetitem6 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(3)
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("Dialog", u"Include Suspended Cards", None));
+        ___qtablewidgetitem7 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(4)
+        ___qtablewidgetitem7.setText(QCoreApplication.translate("Dialog", u"Append (is:new OR is:due)?", None));
+        ___qtablewidgetitem8 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(5)
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("Dialog", u"Tags", None));
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabOptions), QCoreApplication.translate("Dialog", u"Options", None))
         self.labelWrittenBy.setText(QCoreApplication.translate("Dialog", u"Written by Arvind Draffen, 2024", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabAbout), QCoreApplication.translate("Dialog", u"About", None))
