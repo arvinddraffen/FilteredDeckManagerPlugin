@@ -122,10 +122,9 @@ class MainUI(QDialog):
         """
         for row in range(self.ui.tableWidgetStagedForImportFilteredDecks.rowCount()):
             query = self.manager.StagedFilteredDecksList[row].SearchTermsAsString
-            includeSuspended = not self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(row,2).isChecked()
+            includeSuspended = self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(row,2).isChecked()
             includeNewDue = self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(row,3).isChecked()
             updatedCardCount = self.CalculateCardCount(query, includeSuspended, includeNewDue)
-            print(f"Setting card count to {updatedCardCount}")
             self.ui.tableWidgetStagedForImportFilteredDecks.item(row,1).setText(str(updatedCardCount))
 
     def CalculateCardCount(self, query: str, includeSuspended: bool, includeNewDue: bool) -> int:
