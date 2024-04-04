@@ -53,6 +53,7 @@ class MainUI(QDialog):
         qconnect(self.ui.buttonImport.clicked, self.ImportFromFile)
         qconnect(self.ui.buttonOkay.clicked, self.CreateFilteredDecksFromImported)
         qconnect(self.ui.buttonExit.clicked, self.ExitDialog)
+        qconnect(self.rejected, self.ExitDialog)
 
     def ImportFromFile(self) -> None:
         """
