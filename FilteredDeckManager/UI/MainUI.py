@@ -84,6 +84,7 @@ class MainUI(QDialog):
             self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 3, checkboxAppendNewDue)
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 4, searchTermsItem)
             i += 1
+        qconnect(self.ui.tableWidgetStagedForImportFilteredDecks.cellChanged, self.UpdateFilteredDeckName)
         self.ui.tableWidgetStagedForImportFilteredDecks.update()
         self.ui.tableWidgetStagedForImportFilteredDecks.show()
     
@@ -137,6 +138,21 @@ class MainUI(QDialog):
             query = f"{query} (is:new OR is:due)"
         
         return len(self.mainWindow.col.find_cards(query))
+
+    def UpdateFilteredDeckName(self, row: int, column: int) -> None:
+        """
+        Signal for updating the name of a filtered deck based on user input into the Deck Name column.
+        """
+        print(f"Filtered deck name set to: {self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()}")
+        tempDeck = Deck.Deck()
+        tempDeck.Name = self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()
+        if self.manager.IsUnique(tempDeck, self.manager.FilteredDecksList, False, True) and self.manager.IsUnique(tempDeck, self.manager.StagedFilteredDecksList, True, True):
+            self.manager.StagedFilteredDecksList[row].Name = self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()
+        else:
+            QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck name {tempDeck.Name} is not unique.")
+            self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).setText(self.manager.StagedFilteredDecksList[row].Name)
+            print(f"Updating filtered deck name to: {self.manager.StagedFilteredDecksList[row].Name}")
+
 
     def CleanupAndExit(self) -> None:
         """
