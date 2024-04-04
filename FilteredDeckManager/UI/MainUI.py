@@ -8,6 +8,8 @@ from aqt.qt import QTableWidgetItem
 from aqt.qt import QAbstractItemView
 from aqt.qt import QFileDialog
 from aqt.qt import QMessageBox
+from aqt.qt import QAbstractItemView
+from aqt.qt import Qt
 
 from aqt.utils import qconnect
 
@@ -39,6 +41,7 @@ class MainUI(QDialog):
             self.ui.tableWidgetFilteredDecks.setItem(i, 0, QTableWidgetItem(filteredDeck.Name))
             self.ui.tableWidgetFilteredDecks.setItem(i, 1, QTableWidgetItem(filteredDeck.DeckId))
             i += 1
+        self.ui.tableWidgetFilteredDecks.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.ui.tableWidgetFilteredDecks.update()
     
     def SetupSignalsSlots(self) -> None:
@@ -50,7 +53,6 @@ class MainUI(QDialog):
         qconnect(self.ui.buttonImport.clicked, self.ImportFromFile)
         qconnect(self.ui.buttonOkay.clicked, self.CreateFilteredDecksFromImported)
         qconnect(self.ui.buttonExit.clicked, self.ExitDialog)
-    
     def ImportFromFile(self) -> None:
         """
         Import filtered decks from file and populate in UI.
@@ -71,11 +73,13 @@ class MainUI(QDialog):
             checkboxUnsuspended = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
             checkboxAppendNewDue = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
             numberOfCards = len(self.mainWindow.col.find_cards(importedFilteredDeck.SearchTerms[0]))
+            searchTermsItem = QTableWidgetItem(importedFilteredDeck.SearchTerms[0])
+            searchTermsItem.setFlags(searchTermsItem.flags() & ~Qt.ItemFlag.ItemIsEditable)
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 0, QTableWidgetItem(importedFilteredDeck.Name))
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 1, QTableWidgetItem(str(numberOfCards)))
             self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 2, checkboxUnsuspended)
             self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, 3, checkboxAppendNewDue)
-            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 4, QTableWidgetItem(importedFilteredDeck.SearchTerms[0]))
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, 4, searchTermsItem)
             i += 1
         self.ui.tableWidgetStagedForImportFilteredDecks.update()
         self.ui.tableWidgetStagedForImportFilteredDecks.show()
