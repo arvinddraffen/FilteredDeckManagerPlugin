@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>605</width>
+    <width>692</width>
     <height>872</height>
    </rect>
   </property>
@@ -51,6 +51,11 @@
             <property name="selectionBehavior">
              <enum>QAbstractItemView::SelectItems</enum>
             </property>
+            <column>
+             <property name="text">
+              <string>Select</string>
+             </property>
+            </column>
             <column>
              <property name="text">
               <string>Deck Name</string>
@@ -130,7 +135,7 @@
             <item>
              <widget class="QPushButton" name="buttonImport">
               <property name="text">
-               <string>Import</string>
+               <string>Open File</string>
               </property>
              </widget>
             </item>
@@ -151,6 +156,11 @@
           </item>
           <item>
            <widget class="QTableWidget" name="tableWidgetStagedForImportFilteredDecks">
+            <column>
+             <property name="text">
+              <string>Select</string>
+             </property>
+            </column>
             <column>
              <property name="text">
               <string>Deck Name</string>
