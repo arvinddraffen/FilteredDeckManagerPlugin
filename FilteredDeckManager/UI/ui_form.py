@@ -8,7 +8,7 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from aqt.qt import QTabWidget, QVBoxLayout, QLabel, QWidget, QFont, QGroupBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QCoreApplication, QMetaObject, QAbstractItemView
+from aqt.qt import QTabWidget, QVBoxLayout, QLabel, QWidget, QFont, QGroupBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QCoreApplication, QMetaObject, QAbstractItemView, QTextBrowser
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -126,21 +126,17 @@ class Ui_Dialog(object):
         self.tabWidget.addTab(self.tabOptions, "")
         self.tabAbout = QWidget()
         self.tabAbout.setObjectName(u"tabAbout")
-        self.verticalLayout_6 = QVBoxLayout(self.tabAbout)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.tabAboutLayout = QVBoxLayout()
-        self.tabAboutLayout.setObjectName(u"tabAboutLayout")
+        self.verticalLayout_5 = QVBoxLayout(self.tabAbout)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.textBrowser = QTextBrowser(self.tabAbout)
+        self.textBrowser.setObjectName(u"textBrowser")
+
+        self.verticalLayout_5.addWidget(self.textBrowser)
+
         self.labelWrittenBy = QLabel(self.tabAbout)
         self.labelWrittenBy.setObjectName(u"labelWrittenBy")
 
-        self.tabAboutLayout.addWidget(self.labelWrittenBy)
-
-        self.tabAboutSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.tabAboutLayout.addItem(self.tabAboutSpacer)
-
-
-        self.verticalLayout_6.addLayout(self.tabAboutLayout)
+        self.verticalLayout_5.addWidget(self.labelWrittenBy)
 
         self.tabWidget.addTab(self.tabAbout, "")
 
@@ -168,7 +164,7 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(Dialog)
@@ -202,7 +198,7 @@ class Ui_Dialog(object):
         ___qtablewidgetitem8 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(5)
         ___qtablewidgetitem8.setText(QCoreApplication.translate("Dialog", u"Tags", None));
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabOptions), QCoreApplication.translate("Dialog", u"Options", None))
-        self.labelWrittenBy.setText(QCoreApplication.translate("Dialog", u"Written by Arvind Draffen, 2024", None))
+        self.labelWrittenBy.setText(QCoreApplication.translate("Dialog", u"Written by:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabAbout), QCoreApplication.translate("Dialog", u"About", None))
         self.buttonOkay.setText(QCoreApplication.translate("Dialog", u"Okay", None))
         self.buttonExit.setText(QCoreApplication.translate("Dialog", u"Exit", None))

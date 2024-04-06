@@ -11,6 +11,7 @@ from aqt.qt import QFileDialog
 from aqt.qt import QMessageBox
 from aqt.qt import QAbstractItemView
 from aqt.qt import Qt
+from aqt.qt import QUrl
 
 from aqt.utils import qconnect
 
@@ -24,6 +25,7 @@ class MainUI(QDialog):
         self.mainWindow = mw
         self.manager = FilteredDeckManager(self.mainWindow)
         self.SetupSignalsSlots()
+        self.SetupAboutTab()
     
     def InitializeData(self) -> None:
         """
@@ -57,6 +59,13 @@ class MainUI(QDialog):
         qconnect(self.ui.buttonOkay.clicked, self.CreateFilteredDecksFromImported)
         qconnect(self.ui.buttonExit.clicked, self.ExitDialog)
         qconnect(self.rejected, self.ExitDialog)
+    
+    def SetupAboutTab(self) -> None:
+        import datetime
+        from pathlib import Path
+        self.ui.labelWrittenBy.setText(f"{self.ui.labelWrittenBy.text()} Arvind Draffen, {datetime.date.today().year}.")
+        readmePath = (Path(__file__).parent.parent).joinpath('Utilities').joinpath('Data').joinpath('AboutText.md')
+        self.ui.textBrowser.setSource(QUrl.fromLocalFile(f"{readmePath}"))
 
     def ImportFromFile(self) -> None:
         """
@@ -229,4 +238,4 @@ if __name__ == "__main__":
 
 
 
-# from aqt.qt import QTabWidget, QVBoxLayout, QLabel, QWidget, QFont, QGroupBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QCoreApplication, QMetaObject, QAbstractItemView
+# from aqt.qt import QTabWidget, QVBoxLayout, QLabel, QWidget, QFont, QGroupBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QCoreApplication, QMetaObject, QAbstractItemView, QTextBrowser
