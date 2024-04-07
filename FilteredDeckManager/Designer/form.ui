@@ -33,7 +33,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabOptions">
       <attribute name="title">
@@ -197,30 +197,16 @@
       <attribute name="title">
        <string>About</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <layout class="QVBoxLayout" name="tabAboutLayout">
-         <item>
-          <widget class="QLabel" name="labelWrittenBy">
-           <property name="text">
-            <string>Written by Arvind Draffen, 2024</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="tabAboutSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
+        <widget class="QTextBrowser" name="textBrowser"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelWrittenBy">
+         <property name="text">
+          <string>Written by:</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

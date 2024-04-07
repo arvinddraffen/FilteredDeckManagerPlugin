@@ -1,4 +1,4 @@
-#  Filtered Deck Manager
+#  Overview
 Filtered Deck Manager is an Anki add-on providing support for importing and exporting filtered decks, with the primary motivation being for sharing filtered decks based on the same source deck. 
 <br />
 
