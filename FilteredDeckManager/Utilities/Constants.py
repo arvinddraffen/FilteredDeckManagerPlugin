@@ -5,6 +5,9 @@ Provides constants used in the UI.
 from enum import Enum
 
 class UI_CONSTANTS:
+    """
+    Constants used in the add-on UI.
+    """
     class FilteredDeckTableWidgetColumns(Enum):
         """Defines constants to use instead of column index numbers for tableWidgetFilteredDecks."""
         SELECT_CHECKBOX = 0

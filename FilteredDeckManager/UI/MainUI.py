@@ -16,7 +16,19 @@ from aqt.qt import QUrl
 from aqt.utils import qconnect
 
 class MainUI(QDialog):
+    """
+    Dialog UI data preparation and additional UI setup.
+    UI initially defined using Qt designer, imported as ui_form.py. Qt designer file located in Designer/form.ui.
+    """
     def __init__(self, mw, parent=None) -> None:
+        """
+        Initializes MainUI class.
+        Initializes data of QTableWidget for existing filtered decks, populates the About tab, and defines Qt signal/slots.
+
+        Args:
+            mw: Anki MainWindow
+            parent (optional): Parent for MainUI. Defaults to None.
+        """
         super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
@@ -34,9 +46,12 @@ class MainUI(QDialog):
         self.manager._GetAllDecks()
         self.PopulateDecks(self.manager.FilteredDecksList)
 
-    def PopulateDecks(self, filteredDecksList: list) ->None:
+    def PopulateDecks(self, filteredDecksList: list[Deck.Deck]) ->None:
         """
         Populates the central table with a list of filtered decks (Deck Name and Deck Id).
+
+        Args:
+            filteredDecksList (list[Deck.Deck]): The list of current filtered decks.
         """
         self.ui.tableWidgetFilteredDecks.setRowCount(len(filteredDecksList))
         i = 0
@@ -51,7 +66,7 @@ class MainUI(QDialog):
     
     def SetupSignalsSlots(self) -> None:
         """
-        Sets up Qt signals/slots for `MainUI`, primarily for button presses..
+        Sets up Qt signals/slots for `MainUI`, primarily for button presses.
         """
         qconnect(self.ui.pushButtonExportAll.clicked, self.WriteAllToFile)
         qconnect(self.ui.buttonExportSelected.clicked, self.WriteSelectedToFile)
@@ -61,6 +76,9 @@ class MainUI(QDialog):
         qconnect(self.rejected, self.ExitDialog)
     
     def SetupAboutTab(self) -> None:
+        """
+        Populates information in the About tab.
+        """
         import datetime
         from pathlib import Path
         self.ui.labelWrittenBy.setText(f"{self.ui.labelWrittenBy.text()} Arvind Draffen, {datetime.date.today().year}.")
@@ -79,6 +97,9 @@ class MainUI(QDialog):
     def PopulateImportedFilteredDecks(self, importedFilteredDecksList: list[Deck.Deck]) -> None:
         """
         Populates imported filtered decks into the corresponding QTableWidget.
+
+        Args:
+            importedFilteredDecksList (list[Deck.Deck]): The list of filtered decks read in from the imported file.
         """
         self.ui.tableWidgetStagedForImportFilteredDecks.setRowCount(len(importedFilteredDecksList))
         i = 0
@@ -135,7 +156,7 @@ class MainUI(QDialog):
             i += 1
         self.CleanupAndExit()
     
-    def UpdateImportedFilteredDecks(self):
+    def UpdateImportedFilteredDecks(self) -> None:
         """
         Slot for updating data in the staged filtered decks table on toggle of option checkboxes.
         """
@@ -149,6 +170,14 @@ class MainUI(QDialog):
     def CalculateCardCount(self, query: str, includeSuspended: bool, includeNewDue: bool) -> int:
         """
         Calculates the card count based on a given search term and additional modifiers of suspended or only new/due cards.
+
+        Args:
+            query (str): The search string to use to query the Anki database for selecting cards.
+            includeSuspended (bool): Whether or not to include suspended cards in the card count.
+            includeNewDue (bool): Whether to restrict the card count to cards that are new or due to studying at the time of deck creation.
+
+        Returns:
+            int: The number of cards matching the search criteria.
         """
         if not includeSuspended:
             query = f"{query} (-is:suspended)"
@@ -160,6 +189,10 @@ class MainUI(QDialog):
     def UpdateFilteredDeckName(self, row: int, column: int) -> None:
         """
         Slot for updating the name of a filtered deck based on user input into the Deck Name column.
+
+        Args:
+            row (int): The row in the QTableWidget corresponding to the deck to update.
+            column (int): The column in the QTableWidget corresponding to the deck to update.
         """
         if column == Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.DECK_NAME:
             print(f"Filtered deck name set to: {self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()}")
@@ -174,7 +207,10 @@ class MainUI(QDialog):
 
     def GetSelectedFilteredDecks(self) -> list[int]:
         """
-        Returns list of indices where the "Select" column of a QTableWidget is selected.
+        Returns list of indices where the "Select" column of a filtered decks QTableWidget is selected.
+
+        Returns:
+            list[int]: The list of indices from the filtered decks QTableWidget that are selected.
         """
         selectedDecks = []
         for row in range(self.ui.tableWidgetFilteredDecks.rowCount()):
@@ -184,7 +220,10 @@ class MainUI(QDialog):
     
     def GetSelectedStagedFilteredDecks(self) -> list[int]:
         """
-        Returns list of indices where the "Select" column of a QTableWidget is selected.
+        Returns list of indices where the "Select" column of the staged filtered decks QTableWidget is selected.
+
+        Returns:
+            list[int]: The list of indices from the staged filtered decks QTableWidget that are selected.
         """
         selectedDecks = []
         for row in range(self.ui.tableWidgetStagedForImportFilteredDecks.rowCount()):
@@ -195,7 +234,7 @@ class MainUI(QDialog):
 
     def CleanupAndExit(self) -> None:
         """
-        After filtered deck import, update MainWindow and FilteredDecks list for add-on.
+        After filtered deck import, update MainWindow and FilteredDecks list for add-on, then cleanup prior to exiting.
         """
         self.mainWindow.reset()
         self.InitializeData()
@@ -203,7 +242,7 @@ class MainUI(QDialog):
 
     def ExitDialog(self) -> None:
         """
-        Closes the Filtered Deck Manager window.
+        Closes the Filtered Deck Manager window. Resets data and restores UI to initial state.
         """
         self.ui.tableWidgetFilteredDecks.clearContents()
         self.ui.tableWidgetFilteredDecks.setRowCount(0)

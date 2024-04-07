@@ -1,6 +1,9 @@
 class Deck:
-    """Represents a Deck object as exposed by the Anki API."""
+    """Represents a subset Deck object as exposed by the Anki API."""
     def __init__(self) -> None:
+        """
+        Initializes a Deck.
+        """
         self.deckId: int = None
         self.name: str = None
         self.level: int = None

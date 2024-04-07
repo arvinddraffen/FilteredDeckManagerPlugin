@@ -1,13 +1,27 @@
 from .Models import Deck
 
 class FilteredDeckManager:
+    """
+    Data management and file handling for import/export of decks.
+
+    Returns:
+        _type_: _description_
+    """
     from anki.collection import Collection
     
     def __init__(self, mw) -> None:
+        """
+        Initializes a FilteredDeckManager.
+
+        Args:
+            mw: Anki MainWindow
+        """
         self.mainWindow = mw
 
     def _GetAllDecks(self):
-        """Gets all decks from the deck due tree."""
+        """
+        Gets all decks from the deck due tree.
+        """
         from google.protobuf import json_format
         self.allDecksList = []
         for deck in self.mainWindow.col.sched.deck_due_tree().children:
@@ -19,11 +33,15 @@ class FilteredDeckManager:
         self._InitializeFilteredDecksList()
 
     def CardCount(self) -> None:
-        """Test function, returns the total card count."""
+        """
+        Test function, returns the total card count.
+        """
         return self.mainWindow.col.card_count()
 
     def _InitializeFilteredDecksList(self):
-        """Iterates through all decks in the deck due tree and selects only the filtered decks."""
+        """
+        Iterates through all decks in the deck due tree and selects only the filtered decks.
+        """
         self.filteredDecksList = []
         for deck in self.allDecksList:
             if deck.IsFiltered:
@@ -34,22 +52,47 @@ class FilteredDeckManager:
                 self.filteredDecksList.append(deck)
 
     @property
-    def FilteredDecksList(self) -> list:
-        """Gets the list of filtered decks."""
+    def FilteredDecksList(self) -> list[Deck.Deck]:
+        """
+        Gets the list of filtered decks.
+
+        Returns:
+            list[Deck.Deck]: current list of filtered decks.
+        """
         return self.filteredDecksList
     
     @property
     def StagedFilteredDecksList(self) -> list[Deck.Deck]:
+        """
+        Gets the list of filtered decks staged for import.
+
+        Returns:
+            list[Deck.Deck]: The current list of filtered decks staged for import.
+        """
         return self.stagedFilteredDecksList
     
     def WriteToFile(self, filepath: str, decks: list[Deck.Deck]) -> None:
-        """Write list of filtered decks to file."""
+        """
+        Write list of filtered decks to file.
+
+        Args:
+            filepath (str): The absolute path of the output file to write the exported filtered decks file.
+            decks (list[Deck.Deck]): The list of filtered decks to write to file.
+        """
         import json
         with open(filepath, "w") as output:
             json.dump([deck.AsDict()for deck in decks], output, indent=2)
     
     def ReadFromFile(self, filepath: str) -> list[Deck.Deck]:
-        """Reads list of filtered decks from file."""
+        """
+        Reads list of filtered decks from file.
+
+        Args:
+            filepath (str): The absolute path of the input file to read from.
+
+        Returns:
+            list[Deck.Deck]: A list of filtered decks generated from the imported file.
+        """
         import os.path
         if not os.path.exists(filepath):
             return  # invalid file
@@ -70,8 +113,16 @@ class FilteredDeckManager:
 
     def IsUnique(self, deck: Deck.Deck, comparisonList: list[Deck.Deck], importList = False, checkNameOnly = False) -> bool:
         """
-        Compares Deck name and Deck search terms to assess uniqueness.
-        If both match, the deck is not considered unique.
+        Compares Deck name and Deck search terms to assess uniqueness. If both match, the deck is not considered unique.
+
+        Args:
+            deck (Deck.Deck): The Deck to compare.
+            comparisonList (list[Deck.Deck]): The list of comparison decks to check against deck.
+            importList (bool, optional): Flag to indicate whether comparisonList contains deck. Defaults to False.
+            checkNameOnly (bool, optional): Flag to only check against deck names and not tags. Used for validating renaming of staged import decks. Defaults to False.
+
+        Returns:
+            bool: True if the deck is unique, otherwise False.
         """
         uniqueNameCheck = [x for x in comparisonList if (deck.Name == x.Name)]
         if importList:
