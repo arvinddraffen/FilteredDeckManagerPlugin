@@ -1,4 +1,8 @@
+from re import search
 from .Models import Deck
+
+from .Utilities import Logger
+import logging
 
 class FilteredDeckManager:
     """
@@ -17,6 +21,7 @@ class FilteredDeckManager:
             mw: Anki MainWindow
         """
         self.mainWindow = mw
+        self.logger = Logger.Logger(mw)
 
     def _GetAllDecks(self):
         """
@@ -104,7 +109,7 @@ class FilteredDeckManager:
             for deckJson in data:
                 deck = Deck.Deck()
                 deck.FromDict(deckJson, haveSearchTerms=True)
-                print(f"Imported deck: {deck.Name}")
+                if self.logger.LoggingSupported: self.logger.Logger.debug(f"Imported deck: {deck.Name}")
                 # will need to check for identical decks here
                 importedDecks.append(deck)
         
@@ -125,6 +130,8 @@ class FilteredDeckManager:
             bool: True if the deck is unique, otherwise False.
         """
         uniqueNameCheck = [x for x in comparisonList if (deck.Name == x.Name)]
+        deckNameUnique = True
+        searchQueryUnique = True
         if importList:
             deckNameUnique = len(uniqueNameCheck) <= 1     # will have one match of  if checking against the import list
         else:
@@ -154,7 +161,11 @@ class FilteredDeckManager:
             if sorted(deck1Terms) == sorted(deck2Terms):
                 numberOfMatches += 1
         
-        if numberOfMatches > 1:     # will have 1 match of itself
-            searchQueryUnique = False
+        if importList:
+            if numberOfMatches > 1:     # will have 1 match of itself
+                searchQueryUnique = False
+        else:
+            if numberOfMatches > 0:
+                searchQueryUnique = False
 
         return deckNameUnique and searchQueryUnique

@@ -2,7 +2,9 @@ from aqt import QCheckBox, QTableWidget
 from .ui_form import Ui_Dialog
 from ..FilteredDeckManager import FilteredDeckManager
 from ..Models import Deck
-from ..Utilities import Constants
+from ..Utilities import Constants, Logger
+
+import logging
 
 from aqt.qt import QDialog
 from aqt.qt import QTableWidgetItem
@@ -36,6 +38,7 @@ class MainUI(QDialog):
         self.ui.tableWidgetStagedForImportFilteredDecks.hide()
         self.mainWindow = mw
         self.manager = FilteredDeckManager(self.mainWindow)
+        self.logger = Logger.Logger(mw)
         self.SetupSignalsSlots()
         self.SetupAboutTab()
     
@@ -90,7 +93,6 @@ class MainUI(QDialog):
         Import filtered decks from file and populate in UI.
         """
         filepath = QFileDialog.getOpenFileName(self, caption="Import", filter="JSON (*.json)")[0]
-        print(filepath)
         importedFilteredDecksList = self.manager.ReadFromFile(filepath)
         self.PopulateImportedFilteredDecks(importedFilteredDecksList)
     
@@ -104,7 +106,7 @@ class MainUI(QDialog):
         self.ui.tableWidgetStagedForImportFilteredDecks.setRowCount(len(importedFilteredDecksList))
         i = 0
         for importedFilteredDeck in importedFilteredDecksList:
-            print(f"Adding: {importedFilteredDeck.Name}")
+            if self.logger.LoggingSupported: self.logger.Logger.debug(f"Adding: {importedFilteredDeck.Name}")
             checkboxSelected = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
             checkboxUnsuspended = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
             checkboxAppendNewDue = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
@@ -132,7 +134,7 @@ class MainUI(QDialog):
         selectedDecks = self.GetSelectedStagedFilteredDecks()
         i = 0
         for deck in importedFilteredDecksList:
-            print(f"Assessing Deck #{i}. Selected Decks: {selectedDecks}")
+            if self.logger.LoggingSupported: self.logger.Logger.debug(f"Assessing Deck #{i}. Selected Decks: {selectedDecks}")
             if i in selectedDecks:
                 if self.manager.IsUnique(deck, importedFilteredDecksList, importList=True):
                     if self.manager.IsUnique(deck, self.manager.FilteredDecksList):
@@ -195,7 +197,7 @@ class MainUI(QDialog):
             column (int): The column in the QTableWidget corresponding to the deck to update.
         """
         if column == Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.DECK_NAME:
-            print(f"Filtered deck name set to: {self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()}")
+            if self.logger.LoggingSupported: self.logger.Logger.debug(f"Filtered deck name set to: {self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()}")
             tempDeck = Deck.Deck()
             tempDeck.Name = self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).text()
             if self.manager.IsUnique(tempDeck, self.manager.FilteredDecksList, False, True) and self.manager.IsUnique(tempDeck, self.manager.StagedFilteredDecksList, True, True):
@@ -203,7 +205,7 @@ class MainUI(QDialog):
             else:
                 QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck name {tempDeck.Name} is not unique.")
                 self.ui.tableWidgetStagedForImportFilteredDecks.item(row,column).setText(self.manager.StagedFilteredDecksList[row].Name)
-                print(f"Updating filtered deck name to: {self.manager.StagedFilteredDecksList[row].Name}")
+                if self.logger.LoggingSupported: self.logger.Logger.debug(f"Updating filtered deck name to: {self.manager.StagedFilteredDecksList[row].Name}")
 
     def GetSelectedFilteredDecks(self) -> list[int]:
         """

@@ -23,6 +23,12 @@ class UI_CONSTANTS:
         APPEND_NEW_DUE_CHECKBOX = 4
         TAGS = 5
 
+class BACKEND_CONSTANTS:
+    """
+    Constants used in back-end logic.
+    """
+
+    ANKI_VERSION_LOGGING_SUPPORT = 240400
 
 if __name__ == "__main__":
     pass
