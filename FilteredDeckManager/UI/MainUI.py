@@ -34,6 +34,7 @@ class MainUI(QDialog):
         super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.ui.tabWidget.setCurrentIndex(0)    # ensure the first tab is the active tab on load
         self.ui.tableWidgetFilteredDecks.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.ui.tableWidgetStagedForImportFilteredDecks.hide()
         self.mainWindow = mw
