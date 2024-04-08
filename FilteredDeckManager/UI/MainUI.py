@@ -85,7 +85,7 @@ class MainUI(QDialog):
         """
         import datetime
         from pathlib import Path
-        self.ui.labelWrittenBy.setText(f"{self.ui.labelWrittenBy.text()} Arvind Draffen, {datetime.date.today().year}.")
+        self.ui.labelWrittenBy.setText(f"{self.ui.labelWrittenBy.text()} Arvind Draffen, {datetime.date.today().year}.\nAdd-on version: {Constants.BACKEND_CONSTANTS.ADD_ON_VERSION}")
         readmePath = (Path(__file__).parent.parent).joinpath('Utilities').joinpath('Data').joinpath('AboutText.md')
         self.ui.textBrowser.setSource(QUrl.fromLocalFile(f"{readmePath}"))
 
