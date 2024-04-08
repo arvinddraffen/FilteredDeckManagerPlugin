@@ -164,14 +164,14 @@ class Ui_Dialog(object):
 
         self.retranslateUi(Dialog)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(Dialog)
     # setupUi
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
+        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Filtered Deck Manager", None))
         self.labelTitle.setText(QCoreApplication.translate("Dialog", u"Filtered Deck Manager", None))
         self.groupBox.setTitle(QCoreApplication.translate("Dialog", u"Filtered Decks", None))
         ___qtablewidgetitem = self.tableWidgetFilteredDecks.horizontalHeaderItem(0)
