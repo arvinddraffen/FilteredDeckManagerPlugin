@@ -21,7 +21,8 @@ class UI_CONSTANTS:
         TOTAL_CARD_NUMBER = 2
         INCLUDE_SUSPENDED_CHECKBOX = 3
         APPEND_NEW_DUE_CHECKBOX = 4
-        TAGS = 5
+        SEARCH_1 = 5
+        SEARCH_2 = 6
 
 class BACKEND_CONSTANTS:
     """
