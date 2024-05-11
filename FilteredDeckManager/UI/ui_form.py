@@ -9,12 +9,11 @@
 ################################################################################
 
 from aqt.qt import QTabWidget, QVBoxLayout, QLabel, QWidget, QFont, QGroupBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QCoreApplication, QMetaObject, QAbstractItemView, QTextBrowser
-
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(692, 872)
+        Dialog.resize(780, 872)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.labelTitle = QLabel(Dialog)
@@ -102,8 +101,8 @@ class Ui_Dialog(object):
         self.verticalLayout_3.addLayout(self.groupBoxImportSublayout1)
 
         self.tableWidgetStagedForImportFilteredDecks = QTableWidget(self.groupBoxImport)
-        if (self.tableWidgetStagedForImportFilteredDecks.columnCount() < 6):
-            self.tableWidgetStagedForImportFilteredDecks.setColumnCount(6)
+        if (self.tableWidgetStagedForImportFilteredDecks.columnCount() < 7):
+            self.tableWidgetStagedForImportFilteredDecks.setColumnCount(7)
         __qtablewidgetitem3 = QTableWidgetItem()
         self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(0, __qtablewidgetitem3)
         __qtablewidgetitem4 = QTableWidgetItem()
@@ -116,6 +115,8 @@ class Ui_Dialog(object):
         self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(4, __qtablewidgetitem7)
         __qtablewidgetitem8 = QTableWidgetItem()
         self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(5, __qtablewidgetitem8)
+        __qtablewidgetitem9 = QTableWidgetItem()
+        self.tableWidgetStagedForImportFilteredDecks.setHorizontalHeaderItem(6, __qtablewidgetitem9)
         self.tableWidgetStagedForImportFilteredDecks.setObjectName(u"tableWidgetStagedForImportFilteredDecks")
 
         self.verticalLayout_3.addWidget(self.tableWidgetStagedForImportFilteredDecks)
@@ -196,7 +197,9 @@ class Ui_Dialog(object):
         ___qtablewidgetitem7 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(4)
         ___qtablewidgetitem7.setText(QCoreApplication.translate("Dialog", u"Append (is:new OR is:due)?", None));
         ___qtablewidgetitem8 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(5)
-        ___qtablewidgetitem8.setText(QCoreApplication.translate("Dialog", u"Tags", None));
+        ___qtablewidgetitem8.setText(QCoreApplication.translate("Dialog", u"Search 1", None));
+        ___qtablewidgetitem9 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(6)
+        ___qtablewidgetitem9.setText(QCoreApplication.translate("Dialog", u"Search 2", None));
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabOptions), QCoreApplication.translate("Dialog", u"Options", None))
         self.labelWrittenBy.setText(QCoreApplication.translate("Dialog", u"Written by:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabAbout), QCoreApplication.translate("Dialog", u"About", None))

@@ -15,6 +15,10 @@ from aqt.qt import QAbstractItemView
 from aqt.qt import Qt
 from aqt.qt import QUrl
 
+from anki.scheduler import FilteredDeckForUpdate
+from aqt.operations.scheduling import add_or_update_filtered_deck
+from anki.decks import FilteredDeckConfig
+
 from aqt.utils import qconnect
 
 class MainUI(QDialog):
@@ -114,14 +118,18 @@ class MainUI(QDialog):
             qconnect(checkboxUnsuspended.stateChanged, self.UpdateImportedFilteredDecks)
             qconnect(checkboxAppendNewDue.stateChanged, self.UpdateImportedFilteredDecks)
             numberOfCards = self.CalculateCardCount(importedFilteredDeck.SearchTermsAsString, False, False)
-            searchTermsItem = QTableWidgetItem(importedFilteredDeck.SearchTerms[0])
-            searchTermsItem.setFlags(searchTermsItem.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            searchTerms1Item = QTableWidgetItem(importedFilteredDeck.SearchTerms[0])
+            searchTerms1Item.setFlags(searchTerms1Item.flags() & ~Qt.ItemFlag.ItemIsEditable)
             self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.SELECT_CHECKBOX.value, checkboxSelected)
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.DECK_NAME.value, QTableWidgetItem(importedFilteredDeck.Name))
             self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.TOTAL_CARD_NUMBER.value, QTableWidgetItem(str(numberOfCards)))
             self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.INCLUDE_SUSPENDED_CHECKBOX.value, checkboxUnsuspended)
             self.ui.tableWidgetStagedForImportFilteredDecks.setCellWidget(i, Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value, checkboxAppendNewDue)
-            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.TAGS.value, searchTermsItem)
+            self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.SEARCH_1.value, searchTerms1Item)
+            if len(importedFilteredDeck.SearchTerms) > 1:
+                searchTerms2Item = QTableWidgetItem(importedFilteredDeck.SearchTerms[1])
+                searchTerms2Item.setFlags(searchTerms2Item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+                self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.SEARCH_2.value, searchTerms2Item)
             i += 1
         qconnect(self.ui.tableWidgetStagedForImportFilteredDecks.cellChanged, self.UpdateFilteredDeckName)
         self.ui.tableWidgetStagedForImportFilteredDecks.update()
@@ -139,19 +147,29 @@ class MainUI(QDialog):
             if i in selectedDecks:
                 if self.manager.IsUnique(deck, importedFilteredDecksList, importList=True):
                     if self.manager.IsUnique(deck, self.manager.FilteredDecksList):
-                        searchTerm = deck.searchTerms[0]
-                        if len(deck.SearchTerms) == 2:
-                            searchTerm = f"{searchTerm} {deck.SearchTerms[1]}"
                         if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.INCLUDE_SUSPENDED_CHECKBOX.value).isChecked():
                             cardsToUnsuspend = self.mainWindow.col.find_cards(deck.SearchTerms[0])
                             self.mainWindow.col.sched.unsuspend_cards(cardsToUnsuspend)
+
+                        newFilteredDeck = FilteredDeckForUpdate()
+                        newFilteredDeck.name = deck.Name
+                        newFilteredDeck.config.reschedule = True    # add option in later versions, but explicitly set for now
+                        newFilteredDeck.allow_empty = True
+                        
+                        terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=9999)]
                         if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked():
-                            searchTerm = f"{searchTerm} (is:new OR is:due)"
-                        newDeckId = self.mainWindow.col.decks.new_filtered(deck.Name)
-                        newDeck = self.mainWindow.col.decks.get(newDeckId)
-                        newDeck["terms"] = [[searchTerm, 9999, 6]]
-                        self.mainWindow.col.decks.save(newDeck)
-                        self.mainWindow.col.sched.rebuildDyn(newDeckId)
+                            terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[0]} (is:new OR is:due)",limit=9999)]
+                        else:
+                            terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=9999)]
+
+                        if len(deck.SearchTerms) == 2:
+                            if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked():
+                                terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[1]} (is:new OR is:due)",limit=9999)]
+                            else:
+                                terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[1],limit=9999)]
+
+                        newFilteredDeck.config.search_terms.extend(terms)
+                        add_or_update_filtered_deck(parent=self.mainWindow, deck=newFilteredDeck).run_in_background()
                     else:
                         QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists and will be skipped.")
                 else:
