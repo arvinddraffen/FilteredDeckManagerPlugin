@@ -169,7 +169,6 @@ class MainUI(QDialog):
                                 terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[1],limit=9999)]
 
                         newFilteredDeck.config.search_terms.extend(terms)
-                        print(newFilteredDeck.config.search_terms)
                         add_or_update_filtered_deck(parent=self.mainWindow, deck=newFilteredDeck).run_in_background()
                     else:
                         QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists and will be skipped.")
