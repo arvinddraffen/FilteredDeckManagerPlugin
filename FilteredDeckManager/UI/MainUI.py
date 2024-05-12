@@ -153,8 +153,8 @@ class MainUI(QDialog):
 
                         newFilteredDeck = FilteredDeckForUpdate()
                         newFilteredDeck.name = deck.Name
-                        newFilteredDeck.config.reschedule = True    # add option in later versions, but explicitly set for now
-                        newFilteredDeck.allow_empty = True
+                        newFilteredDeck.config.reschedule = self.manager.Configuration.Reschedule
+                        newFilteredDeck.allow_empty = self.manager.Configuration.AllowEmpty
                         
                         terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=9999)]
                         if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked():
