@@ -151,10 +151,15 @@ class MainUI(QDialog):
                             cardsToUnsuspend = self.mainWindow.col.find_cards(deck.SearchTerms[0])
                             self.mainWindow.col.sched.unsuspend_cards(cardsToUnsuspend)
 
+                        # Initialize new filtered deck
                         newFilteredDeck = FilteredDeckForUpdate()
                         newFilteredDeck.name = deck.Name
-                        newFilteredDeck.config.reschedule = self.manager.Configuration.Reschedule
                         newFilteredDeck.allow_empty = self.manager.Configuration.AllowEmpty
+                        newFilteredDeck.config.reschedule = self.manager.Configuration.Reschedule
+                        if not self.manager.Configuration.Reschedule:
+                            newFilteredDeck.config.preview_again_secs = self.manager.Configuration.IntervalAgain
+                            newFilteredDeck.config.preview_hard_secs = self.manager.Configuration.IntervalHard
+                            newFilteredDeck.config.preview_good_secs = self.manager.Configuration.IntervalGood
                         
                         terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=9999)]
                         if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked():

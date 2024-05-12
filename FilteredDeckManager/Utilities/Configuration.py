@@ -73,7 +73,87 @@ class Configuration:
         Writes the configuration dictionary to the corresponding settings file.
         """
         mw.addonManager.writeConfig(self.addonPath, self.rawData)
+    
+    @property
+    def IntervalAgain(self) -> int:
+        """
+        The value (in seconds) to use for the Again interval, if rescheduling is False.
 
+        Raises:
+            ValueError: If the value of this key in the configuration dictionary is None.
+
+        Returns:
+            int: The value for the Again interval, in seconds.
+        """
+        if self.rawData["intervals"]["again"] is not None:
+            return self.rawData["intervals"]["again"]
+        else:
+            raise ValueError(f"Value for \"intervals\\again\" is unexpected value: {self.rawData['intervals']['again']}")
+    
+    @IntervalAgain.setter
+    def IntervalAgain(self, againInterval: int) -> None:
+        """
+        Sets the value of the intervals/again key.
+
+        Args:
+            againInterval (int): The value (in seconds) to use for the Again interval.
+        """
+        self.rawData["intervals"]["again"] = againInterval
+        self.WriteConfig()
+    
+    @property
+    def IntervalHard(self) -> int:
+        """
+        The value (in seconds) to use for the Hard interval, if rescheduling is False.
+
+        Raises:
+            ValueError: If the value of this key in the configuration dictionary is None.
+
+        Returns:
+            int: The value for the Hard interval, in seconds.
+        """
+        if self.rawData["intervals"]["hard"] is not None:
+            return self.rawData["intervals"]["hard"]
+        else:
+            raise ValueError(f"Value for \"intervals\\hard\" is unexpected value: {self.rawData['intervals']['hard']}")
+    
+    @IntervalHard.setter
+    def IntervalHard(self, hardInterval: int) -> None:
+        """
+        Sets the value of the intervals/hard key.
+
+        Args:
+            hardInterval (int): The value (in seconds) to use for the Hard interval.
+        """
+        self.rawData["intervals"]["hard"] = hardInterval
+        self.WriteConfig()
+    
+    @property
+    def IntervalGood(self) -> int:
+        """
+        The value (in seconds) to use for the Good interval, if rescheduling is False.
+
+        Raises:
+            ValueError: If the value of this key in the configuration dictionary is None.
+
+        Returns:
+            int: The value for the Good interval, in seconds.
+        """
+        if self.rawData["intervals"]["good"] is not None:
+            return self.rawData["intervals"]["good"]
+        else:
+            raise ValueError(f"Value for \"intervals\\good\" is unexpected value: {self.rawData['intervals']['good']}")
+    
+    @IntervalGood.setter
+    def IntervalGood(self, goodInterval: int) -> None:
+        """
+        Sets the value of the intervals/good key.
+
+        Args:
+            goodInterval (int): The value (in seconds) to use for the Good interval.
+        """
+        self.rawData["intervals"]["good"] = goodInterval
+        self.WriteConfig()
 
 if __name__ == "__main__":
     pass

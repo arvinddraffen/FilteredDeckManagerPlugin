@@ -1,4 +1,9 @@
 {
     "allow_empty": true,
-    "reschedule": true
+    "reschedule": true,
+    "intervals": {
+        "again": 0,
+        "hard": 0,
+        "good": 0
+    }
 }
