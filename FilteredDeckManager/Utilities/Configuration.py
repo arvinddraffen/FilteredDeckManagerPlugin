@@ -211,6 +211,35 @@ class Configuration:
         """
         self.rawData["order_by_search2"] = orderBy
         self.WriteConfig()
+    
+    @property
+    def CardLimit(self) -> int:
+        """
+        The maximum number of cards to include in a filtered deck on creation.
+        If the number of matching cards for a search term exceeds this number, the number of cards in the resulting filtered deck will be capped by this number.
+        If the number of matching cards is less than this number, the number of cards in the resulting filtered deck will equal the number of matched cards.
+
+        Raises:
+            ValueError: If the value of this key on the configuration dictionary is None.
+
+        Returns:
+            int: The maximum number of cards to include in the filtered deck.
+        """
+        if self.rawData["card_limit"] is not None:
+            return self.rawData["card_limit"]
+        else:
+            raise ValueError(f"Value for \"card_limit\" is unexpected value: {self.rawData['card_limit']}")
+    
+    @CardLimit.setter
+    def CardLimit(self, cardLimit: int) -> None:
+        """
+        Sets the value of the card_limit key.
+
+        Args:
+            cardLimit (int): The value for the maximum number of cards to include in the filtered deck on creation.
+        """
+        self.rawData["card_limit"] = cardLimit
+        self.WriteConfig()
 
 if __name__ == "__main__":
     pass

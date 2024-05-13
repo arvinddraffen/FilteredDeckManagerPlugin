@@ -49,4 +49,9 @@ Set the ordering to use for the searches used for filtered deck generation. Valu
 
 ---
 
+### `card_limit`
+The maximum number of cards to use on filtered deck creation.
+
+---
+
 **Note**: Restart Anki for add-on changes to take effect.

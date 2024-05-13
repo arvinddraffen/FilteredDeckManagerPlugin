@@ -6,6 +6,7 @@
         "hard": 0,
         "good": 0
     },
-    "order_by_search1": 4,
-    "order_by_search2": 7
+    "order_by_search1": 1,
+    "order_by_search2": 1,
+    "card_limit": 9999
 }

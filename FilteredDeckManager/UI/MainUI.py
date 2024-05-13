@@ -161,17 +161,17 @@ class MainUI(QDialog):
                             newFilteredDeck.config.preview_hard_secs = self.manager.Configuration.IntervalHard
                             newFilteredDeck.config.preview_good_secs = self.manager.Configuration.IntervalGood
                         
-                        terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=9999,order=self.manager.Configuration.OrderBySearch1)]
+                        terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=self.manager.Configuration.CardLimit,order=self.manager.Configuration.OrderBySearch1)]
                         if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked():
-                            terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[0]} (is:new OR is:due)",limit=9999,order=self.manager.Configuration.OrderBySearch1)]
+                            terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[0]} (is:new OR is:due)",limit=self.manager.Configuration.CardLimit,order=self.manager.Configuration.OrderBySearch1)]
                         else:
-                            terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=9999,order=self.manager.Configuration.OrderBySearch1)]
+                            terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=self.manager.Configuration.CardLimit,order=self.manager.Configuration.OrderBySearch1)]
 
                         if len(deck.SearchTerms) == 2:
                             if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked():
-                                terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[1]} (is:new OR is:due)",limit=9999,order=self.manager.Configuration.OrderBySearch2)]
+                                terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[1]} (is:new OR is:due)",limit=self.manager.Configuration.CardLimit,order=self.manager.Configuration.OrderBySearch2)]
                             else:
-                                terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[1],limit=9999,order=self.manager.Configuration.OrderBySearch2)]
+                                terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[1],limit=self.manager.Configuration.CardLimit,order=self.manager.Configuration.OrderBySearch2)]
 
                         newFilteredDeck.config.search_terms.extend(terms)
                         add_or_update_filtered_deck(parent=self.mainWindow, deck=newFilteredDeck).run_in_background()
