@@ -1,4 +1,5 @@
 from aqt import mw
+from anki.decks import FilteredDeckConfig
 
 class Configuration:
     """
@@ -153,6 +154,62 @@ class Configuration:
             goodInterval (int): The value (in seconds) to use for the Good interval.
         """
         self.rawData["intervals"]["good"] = goodInterval
+        self.WriteConfig()
+    
+    @property
+    def OrderBySearch1(self) -> int:
+        """
+        The enum value to use for card ordering in the filtered deck for the first search term.
+        Enum name/values defined at https://github.com/ankitects/anki/blob/main/proto/anki/decks.proto#L91.
+
+        Raises:
+            ValueError: If the value of this key in the configuration dictionary is None.
+
+        Returns:
+            int: The integer representation of the enum value used for card ordering in the filtered deck.
+        """
+        if self.rawData["order_by_search1"] is not None:
+            return self.rawData["order_by_search1"]
+        else:
+            raise ValueError(f"Value for \"order_by_search1\" is unexpected value: {self.rawData['order_by_search1']}")
+    
+    @OrderBySearch1.setter
+    def OrderBySearch1(self, orderBy: int):
+        """
+        Sets the value of the order_by_search1 key.
+
+        Args:
+            orderBy (int): The integer representation of the Order enum value.
+        """
+        self.rawData["order_by_search1"] = orderBy
+        self.WriteConfig()
+    
+    @property
+    def OrderBySearch2(self) -> int:
+        """
+        The enum value to use for card ordering in the filtered deck for the second search term.
+        Enum name/values defined at https://github.com/ankitects/anki/blob/main/proto/anki/decks.proto#L91.
+
+        Raises:
+            ValueError: If the value of this key in the configuration dictionary is None.
+
+        Returns:
+            int: The integer representation of the enum value used for card ordering in the filtered deck.
+        """
+        if self.rawData["order_by_search2"] is not None:
+            return self.rawData["order_by_search2"]
+        else:
+            raise ValueError(f"Value for \"order_by_search2\" is unexpected value: {self.rawData['order_by_search2']}")
+    
+    @OrderBySearch2.setter
+    def OrderBySearch2(self, orderBy: int):
+        """
+        Sets the value of the order_by_search2 key.
+
+        Args:
+            orderBy (int): The integer representation of the Order enum value.
+        """
+        self.rawData["order_by_search2"] = orderBy
         self.WriteConfig()
 
 if __name__ == "__main__":

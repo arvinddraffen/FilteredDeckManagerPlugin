@@ -5,5 +5,7 @@
         "again": 0,
         "hard": 0,
         "good": 0
-    }
+    },
+    "order_by_search1": 4,
+    "order_by_search2": 7
 }
