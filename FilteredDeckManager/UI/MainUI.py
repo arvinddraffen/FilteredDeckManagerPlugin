@@ -151,22 +151,27 @@ class MainUI(QDialog):
                             cardsToUnsuspend = self.mainWindow.col.find_cards(deck.SearchTerms[0])
                             self.mainWindow.col.sched.unsuspend_cards(cardsToUnsuspend)
 
+                        # Initialize new filtered deck
                         newFilteredDeck = FilteredDeckForUpdate()
                         newFilteredDeck.name = deck.Name
-                        newFilteredDeck.config.reschedule = True    # add option in later versions, but explicitly set for now
-                        newFilteredDeck.allow_empty = True
+                        newFilteredDeck.allow_empty = self.manager.Configuration.AllowEmpty
+                        newFilteredDeck.config.reschedule = self.manager.Configuration.Reschedule
+                        if not self.manager.Configuration.Reschedule:
+                            newFilteredDeck.config.preview_again_secs = self.manager.Configuration.IntervalAgain
+                            newFilteredDeck.config.preview_hard_secs = self.manager.Configuration.IntervalHard
+                            newFilteredDeck.config.preview_good_secs = self.manager.Configuration.IntervalGood
                         
-                        terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=9999)]
+                        terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=self.manager.Configuration.CardLimit,order=self.manager.Configuration.OrderBySearch1)]
                         if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked():
-                            terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[0]} (is:new OR is:due)",limit=9999)]
+                            terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[0]} (is:new OR is:due)",limit=self.manager.Configuration.CardLimit,order=self.manager.Configuration.OrderBySearch1)]
                         else:
-                            terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=9999)]
+                            terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=self.manager.Configuration.CardLimit,order=self.manager.Configuration.OrderBySearch1)]
 
                         if len(deck.SearchTerms) == 2:
                             if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked():
-                                terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[1]} (is:new OR is:due)",limit=9999)]
+                                terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[1]} (is:new OR is:due)",limit=self.manager.Configuration.CardLimit,order=self.manager.Configuration.OrderBySearch2)]
                             else:
-                                terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[1],limit=9999)]
+                                terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[1],limit=self.manager.Configuration.CardLimit,order=self.manager.Configuration.OrderBySearch2)]
 
                         newFilteredDeck.config.search_terms.extend(terms)
                         add_or_update_filtered_deck(parent=self.mainWindow, deck=newFilteredDeck).run_in_background()

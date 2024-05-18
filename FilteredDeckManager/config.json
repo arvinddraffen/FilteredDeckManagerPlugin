@@ -1,0 +1,14 @@
+{
+    "allow_empty": true,
+    "reschedule": true,
+    "intervals": {
+        "again": 0,
+        "hard": 0,
+        "good": 0
+    },
+    "orders": {
+        "search_1": 1,
+        "search_2": 1
+    },
+    "card_limit": 9999
+}

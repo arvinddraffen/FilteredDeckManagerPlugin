@@ -1,7 +1,7 @@
 from re import search
 from .Models import Deck
 
-from .Utilities import Logger
+from .Utilities import Logger, Configuration
 import logging
 
 class FilteredDeckManager:
@@ -22,6 +22,7 @@ class FilteredDeckManager:
         """
         self.mainWindow = mw
         self.logger = Logger.Logger(mw)
+        self.configuration = Configuration.Configuration(mw.addonManager.addonFromModule(__name__))
 
     def _GetAllDecks(self):
         """
@@ -75,6 +76,16 @@ class FilteredDeckManager:
             list[Deck.Deck]: The current list of filtered decks staged for import.
         """
         return self.stagedFilteredDecksList
+    
+    @property
+    def Configuration(self) -> Configuration.Configuration:
+        """
+        Gets the instance of the Configuration class, for reading add-on settings.
+
+        Returns:
+            Configuration.Configuration: instance of the Configuration class.
+        """
+        return self.configuration
     
     def WriteToFile(self, filepath: str, decks: list[Deck.Deck]) -> None:
         """
