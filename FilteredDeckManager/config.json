@@ -6,7 +6,9 @@
         "hard": 0,
         "good": 0
     },
-    "order_by_search1": 1,
-    "order_by_search2": 1,
+    "orders": {
+        "search_1": 5,
+        "search_2": 5
+    },
     "card_limit": 9999
 }

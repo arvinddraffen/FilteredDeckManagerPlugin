@@ -168,20 +168,20 @@ class Configuration:
         Returns:
             int: The integer representation of the enum value used for card ordering in the filtered deck.
         """
-        if self.rawData["order_by_search1"] is not None:
-            return self.rawData["order_by_search1"]
+        if self.rawData["orders"]["search_1"] is not None:
+            return self.rawData["orders"]["search_1"]
         else:
-            raise ValueError(f"Value for \"order_by_search1\" is unexpected value: {self.rawData['order_by_search1']}")
+            raise ValueError(f"Value for \"orders\\search_1\" is unexpected value: {self.rawData['orders']['search_1']}")
     
     @OrderBySearch1.setter
     def OrderBySearch1(self, orderBy: int):
         """
-        Sets the value of the order_by_search1 key.
+        Sets the value of the orders/search_1 key.
 
         Args:
             orderBy (int): The integer representation of the Order enum value.
         """
-        self.rawData["order_by_search1"] = orderBy
+        self.rawData["orders"]["search_1"] = orderBy
         self.WriteConfig()
     
     @property
@@ -196,20 +196,20 @@ class Configuration:
         Returns:
             int: The integer representation of the enum value used for card ordering in the filtered deck.
         """
-        if self.rawData["order_by_search2"] is not None:
-            return self.rawData["order_by_search2"]
+        if self.rawData["orders"]["search_2"] is not None:
+            return self.rawData["orders"]["search_2"]
         else:
-            raise ValueError(f"Value for \"order_by_search2\" is unexpected value: {self.rawData['order_by_search2']}")
+            raise ValueError(f"Value for \"orders\\search_2\" is unexpected value: {self.rawData['orders']['search_2']}")
     
     @OrderBySearch2.setter
     def OrderBySearch2(self, orderBy: int):
         """
-        Sets the value of the order_by_search2 key.
+        Sets the value of the orders/search_2 key.
 
         Args:
             orderBy (int): The integer representation of the Order enum value.
         """
-        self.rawData["order_by_search2"] = orderBy
+        self.rawData["orders"]["search_2"] = orderBy
         self.WriteConfig()
     
     @property

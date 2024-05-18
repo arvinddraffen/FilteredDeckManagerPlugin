@@ -19,7 +19,10 @@ Enable the option to reschedule cards when answered in the filtered deck.
 
 ---
 
-### `order_by_search1`, `order_by_search2`
+### `orders`
+* `order_by_search1`
+* `order_by_search2`
+
 Set the ordering to use for the searches used for filtered deck generation. Values should be a number, based on the following:
 <!-- Table extension not enabled for markdown.extensions md_in_html.
 
