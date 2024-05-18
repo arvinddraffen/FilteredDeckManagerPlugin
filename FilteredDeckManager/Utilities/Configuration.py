@@ -5,7 +5,7 @@ class Configuration:
     """
     Manages configuration for FilteredDeckManager using the Anki add-on configuration API.
     """
-    def __init__(self, addonPath: str) -> None:
+    def __init__(self, addonPath: str = "") -> None:
         """
         Creates a new Configuration, reads in configuration file and loads data.
 
@@ -13,7 +13,8 @@ class Configuration:
             addonPath (str): Path to the Anki add-on, expected by the Anki API (typically just the add-on name).
         """
         self.addonPath = addonPath
-        self.rawData = mw.addonManager.getConfig(self.addonPath)
+        if addonPath:   # initializing global add-on config, so get add-on path from Anki add-on API
+            self.rawData = mw.addonManager.getConfig(self.addonPath)
 
     @property
     def AllowEmpty(self) -> bool:
