@@ -17,7 +17,7 @@ class Configuration:
             self.rawData = mw.addonManager.getConfig(self.addonPath)
         else:
             self.rawData = {}
-            self.rawData["orders"] = {}
+            self.rawData["search_1"] = {}
         self.hasSecondSearchTerm = False
 
     @property
@@ -214,12 +214,15 @@ class Configuration:
         Args:
             orderBy (int): The integer representation of the Order enum value.
         """
+        if "search_2" not in self.rawData:
+            self.rawData["search_2"] = {}
+
         self.rawData["search_2"]["order"] = orderBy
         self.hasSecondSearchTerm = True
         self.WriteConfig()
     
     @property
-    def CardLimit(self) -> int:
+    def CardLimitSearch1(self) -> int:
         """
         The maximum number of cards to include in a filtered deck on creation.
         If the number of matching cards for a search term exceeds this number, the number of cards in the resulting filtered deck will be capped by this number.
@@ -231,20 +234,49 @@ class Configuration:
         Returns:
             int: The maximum number of cards to include in the filtered deck.
         """
-        if self.rawData["card_limit"] is not None:
-            return self.rawData["card_limit"]
+        if self.rawData["search_1"]["card_limit"] is not None:
+            return self.rawData["search_1"]["card_limit"]
         else:
-            raise ValueError(f"Value for \"card_limit\" is unexpected value: {self.rawData['card_limit']}")
+            raise ValueError(f"Value for \"search_1\\card_limit\" is unexpected value: {self.rawData['search_1']['card_limit']}")
     
-    @CardLimit.setter
-    def CardLimit(self, cardLimit: int) -> None:
+    @CardLimitSearch1.setter
+    def CardLimitSearch1(self, cardLimit: int) -> None:
         """
         Sets the value of the card_limit key.
 
         Args:
             cardLimit (int): The value for the maximum number of cards to include in the filtered deck on creation.
         """
-        self.rawData["card_limit"] = cardLimit
+        self.rawData["search_1"]["card_limit"] = cardLimit
+        self.WriteConfig()
+    
+    @property
+    def CardLimitSearch2(self) -> int:
+        """
+        The maximum number of cards to include in a filtered deck on creation.
+        If the number of matching cards for a search term exceeds this number, the number of cards in the resulting filtered deck will be capped by this number.
+        If the number of matching cards is less than this number, the number of cards in the resulting filtered deck will equal the number of matched cards.
+
+        Raises:
+            ValueError: If the value of this key on the configuration dictionary is None.
+
+        Returns:
+            int: The maximum number of cards to include in the filtered deck.
+        """
+        if self.rawData["search_2"]["card_limit"] is not None:
+            return self.rawData["search_2"]["card_limit"]
+        else:
+            raise ValueError(f"Value for \"search_2\\card_limit\" is unexpected value: {self.rawData['search_2']['card_limit']}")
+    
+    @CardLimitSearch2.setter
+    def CardLimitSearch2(self, cardLimit: int) -> None:
+        """
+        Sets the value of the card_limit key.
+
+        Args:
+            cardLimit (int): The value for the maximum number of cards to include in the filtered deck on creation.
+        """
+        self.rawData["search_2"]["card_limit"] = cardLimit
         self.WriteConfig()
     
     def AsDict(self) -> dict:
@@ -270,11 +302,13 @@ class Configuration:
                 configAsDict["intervals"]["good"] = self.IntervalGood
         if self.OrderBySearch1 is not None:
             configAsDict["search_1"]["order"] = self.OrderBySearch1
+        if self.CardLimitSearch1 is not None:
+            configAsDict["search_1"]["card_limit"] = self.CardLimitSearch1
         if self.hasSecondSearchTerm:
             if self.OrderBySearch2 is not None:
                 configAsDict["search_2"]["order"] = self.OrderBySearch2
-        if self.CardLimit is not None:
-            configAsDict["card_limit"] = self.CardLimit
+            if self.CardLimitSearch2 is not None:
+                configAsDict["card_limit"]["card_limit"] = self.CardLimitSearch2
         
         return configAsDict
 
@@ -303,11 +337,13 @@ class Configuration:
                     self.IntervalGood = configDict["intervals"]["good"]
         if "order" in configDict["search_1"]:
             self.OrderBySearch1 = configDict["search_1"]["order"]
+        if "card_limit" in configDict["search_1"]:
+            self.CardLimitSearch1 = configDict["search_1"]["card_limit"]
         if "search_2" in configDict:
             if "order" in configDict["search_1"]:
                 self.OrderBySearch2 = configDict["search_2"]["order"]
-        if "card_limit" in configDict:
-            self.CardLimit = configDict["card_limit"]
+            if "card_limit" in configDict["search_2"]:
+                self.CardLimitSearch2 = configDict["search_2"]["card_limit"]
 
 if __name__ == "__main__":
     pass

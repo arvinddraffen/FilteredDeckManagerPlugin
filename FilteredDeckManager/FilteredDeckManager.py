@@ -62,9 +62,10 @@ class FilteredDeckManager:
                         deck.searchTerms.append(term.search)
                         if i == 0:
                             deck.Config.OrderBySearch1 = term.order
-                            deck.Config.CardLimit = term.limit
+                            deck.Config.CardLimitSearch1 = term.limit
                         elif i == 1:
                             deck.Config.OrderBySearch2 = term.order
+                            deck.Config.CardLimitSearch2 = term.limit
                         else:
                             pass
                 deck.Config.AllowEmpty = self.mainWindow.col.sched.get_or_create_filtered_deck(deck_id=int(deck.DeckId)).allow_empty
