@@ -52,9 +52,22 @@ class FilteredDeckManager:
         for deck in self.allDecksList:
             if deck.IsFiltered:
                 deckConfig = self.mainWindow.col.sched.get_or_create_filtered_deck(deck_id=int(deck.DeckId)).config
+                deck.Config.Reschedule = deckConfig.reschedule
+                if not deckConfig.reschedule:
+                    deck.Config.IntervalAgain = deckConfig.preview_again_secs
+                    deck.Config.IntervalHard = deckConfig.preview_hard_secs
+                    deck.Config.IntervalGood = deckConfig.preview_good_secs
                 if len(deckConfig.search_terms) == 1 or len(deckConfig.search_terms) == 2:
-                    for term in deckConfig.search_terms:
+                    for i, term in enumerate(deckConfig.search_terms):
                         deck.searchTerms.append(term.search)
+                        if i == 0:
+                            deck.Config.OrderBySearch1 = term.order
+                            deck.Config.CardLimit = term.limit
+                        elif i == 1:
+                            deck.Config.OrderBySearch2 = term.order
+                        else:
+                            pass
+                deck.Config.AllowEmpty = self.mainWindow.col.sched.get_or_create_filtered_deck(deck_id=int(deck.DeckId)).allow_empty
                 self.filteredDecksList.append(deck)
 
     @property
