@@ -173,20 +173,20 @@ class Configuration:
         Returns:
             int: The integer representation of the enum value used for card ordering in the filtered deck.
         """
-        if self.rawData["orders"]["search_1"] is not None:
-            return self.rawData["orders"]["search_1"]
+        if self.rawData["search_1"]["order"] is not None:
+            return self.rawData["search_1"]["order"]
         else:
-            raise ValueError(f"Value for \"orders\\search_1\" is unexpected value: {self.rawData['orders']['search_1']}")
+            raise ValueError(f"Value for \"search_1\\order\" is unexpected value: {self.rawData['search_1']['order']}")
     
     @OrderBySearch1.setter
     def OrderBySearch1(self, orderBy: int):
         """
-        Sets the value of the orders/search_1 key.
+        Sets the value of the search_1/order key.
 
         Args:
             orderBy (int): The integer representation of the Order enum value.
         """
-        self.rawData["orders"]["search_1"] = orderBy
+        self.rawData["search_1"]["order"] = orderBy
         self.WriteConfig()
     
     @property
@@ -201,20 +201,20 @@ class Configuration:
         Returns:
             int: The integer representation of the enum value used for card ordering in the filtered deck.
         """
-        if self.rawData["orders"]["search_2"] is not None:
-            return self.rawData["orders"]["search_2"]
+        if self.rawData["search_2"]["order"] is not None:
+            return self.rawData["search_2"]["order"]
         else:
-            raise ValueError(f"Value for \"orders\\search_2\" is unexpected value: {self.rawData['orders']['search_2']}")
+            raise ValueError(f"Value for \"search_2\\order\" is unexpected value: {self.rawData['search_2']['order']}")
     
     @OrderBySearch2.setter
     def OrderBySearch2(self, orderBy: int):
         """
-        Sets the value of the orders/search_2 key.
+        Sets the value of the search_2/order key.
 
         Args:
             orderBy (int): The integer representation of the Order enum value.
         """
-        self.rawData["orders"]["search_2"] = orderBy
+        self.rawData["search_2"]["order"] = orderBy
         self.hasSecondSearchTerm = True
         self.WriteConfig()
     
@@ -255,7 +255,7 @@ class Configuration:
             dict: This Configuration class as a dict.
         """
         configAsDict = {}
-        configAsDict["orders"] = {}
+        configAsDict["search_1"] = {}
 
         if self.AllowEmpty is not None:
             configAsDict["allow_empty"] = self.AllowEmpty
@@ -269,10 +269,10 @@ class Configuration:
             if self.IntervalGood is not None:
                 configAsDict["intervals"]["good"] = self.IntervalGood
         if self.OrderBySearch1 is not None:
-            configAsDict["orders"]["search_1"] = self.OrderBySearch1
+            configAsDict["search_1"]["order"] = self.OrderBySearch1
         if self.hasSecondSearchTerm:
             if self.OrderBySearch2 is not None:
-                configAsDict["orders"]["search_2"] = self.OrderBySearch2
+                configAsDict["search_2"]["order"] = self.OrderBySearch2
         if self.CardLimit is not None:
             configAsDict["card_limit"] = self.CardLimit
         
@@ -286,7 +286,6 @@ class Configuration:
             configDict (dict): Dictionary representation of a Configuration class.
 
         Raises:
-            KeyError: _description_
             KeyError: _description_
         """
         if "allow_empty" in configDict:
@@ -302,13 +301,11 @@ class Configuration:
                     self.IntervalHard = configDict["intervals"]["hard"]
                 if "good" in configDict["intervals"]:
                     self.IntervalGood = configDict["intervals"]["good"]
-        if "orders" not in configDict:
-            raise KeyError("Missing key orders")
-        else:
-            if "search_1" in configDict["orders"]:
-                self.OrderBySearch1 = configDict["orders"]["search_1"]
-            if "search_2" in configDict["orders"]:
-                self.OrderBySearch2 = configDict["orders"]["search_2"]
+        if "order" in configDict["search_1"]:
+            self.OrderBySearch1 = configDict["search_1"]["order"]
+        if "search_2" in configDict:
+            if "order" in configDict["search_1"]:
+                self.OrderBySearch2 = configDict["search_2"]["order"]
         if "card_limit" in configDict:
             self.CardLimit = configDict["card_limit"]
 
