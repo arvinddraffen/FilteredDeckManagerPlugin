@@ -15,6 +15,10 @@ class Configuration:
         self.addonPath = addonPath
         if addonPath:   # initializing global add-on config, so get add-on path from Anki add-on API
             self.rawData = mw.addonManager.getConfig(self.addonPath)
+        else:
+            self.rawData = {}
+            self.rawData["orders"] = {}
+        self.hasSecondSearchTerm = False
 
     @property
     def AllowEmpty(self) -> bool:
@@ -211,6 +215,7 @@ class Configuration:
             orderBy (int): The integer representation of the Order enum value.
         """
         self.rawData["orders"]["search_2"] = orderBy
+        self.hasSecondSearchTerm = True
         self.WriteConfig()
     
     @property
@@ -241,6 +246,71 @@ class Configuration:
         """
         self.rawData["card_limit"] = cardLimit
         self.WriteConfig()
+    
+    def AsDict(self) -> dict:
+        """
+        Serialize current Configuration class to dict.
+
+        Returns:
+            dict: This Configuration class as a dict.
+        """
+        configAsDict = {}
+        configAsDict["orders"] = {}
+
+        if self.AllowEmpty is not None:
+            configAsDict["allow_empty"] = self.AllowEmpty
+        if self.Reschedule is not None:
+            configAsDict["reschedule"] = self.Reschedule
+        if not self.Reschedule:
+            if self.IntervalAgain is not None:
+                configAsDict["intervals"]["again"] = self.IntervalAgain
+            if self.IntervalHard is not None:
+                configAsDict["intervals"]["hard"] = self.IntervalHard
+            if self.IntervalGood is not None:
+                configAsDict["intervals"]["good"] = self.IntervalGood
+        if self.OrderBySearch1 is not None:
+            configAsDict["orders"]["search_1"] = self.OrderBySearch1
+        if self.hasSecondSearchTerm:
+            if self.OrderBySearch2 is not None:
+                configAsDict["orders"]["search_2"] = self.OrderBySearch2
+        if self.CardLimit is not None:
+            configAsDict["card_limit"] = self.CardLimit
+        
+        return configAsDict
+
+    def FromDict(self, configDict: dict) -> None:
+        """
+        Populates member variables of this Configuration class from a dictionary representation.
+
+        Args:
+            configDict (dict): Dictionary representation of a Configuration class.
+
+        Raises:
+            KeyError: _description_
+            KeyError: _description_
+        """
+        if "allow_empty" in configDict:
+            self.AllowEmpty = configDict["allow_empty"]
+        else:
+            raise KeyError("Missing key allow_empty.")
+        if "reschedule" in configDict:
+            self.Reschedule = configDict["reschedule"]
+            if not self.Reschedule:
+                if "again" in configDict["intervals"]:
+                    self.IntervalAgain = configDict["intervals"]["again"]
+                if "hard" in configDict["intervals"]:
+                    self.IntervalHard = configDict["intervals"]["hard"]
+                if "good" in configDict["intervals"]:
+                    self.IntervalGood = configDict["intervals"]["good"]
+        if "orders" not in configDict:
+            raise KeyError("Missing key orders")
+        else:
+            if "search_1" in configDict["orders"]:
+                self.OrderBySearch1 = configDict["orders"]["search_1"]
+            if "search_2" in configDict["orders"]:
+                self.OrderBySearch2 = configDict["orders"]["search_2"]
+        if "card_limit" in configDict:
+            self.CardLimit = configDict["card_limit"]
 
 if __name__ == "__main__":
     pass
