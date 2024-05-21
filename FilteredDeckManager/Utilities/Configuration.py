@@ -279,6 +279,35 @@ class Configuration:
         self.rawData["search_2"]["card_limit"] = cardLimit
         self.WriteConfig()
     
+    @property
+    def UseGlobalConfig(self) -> bool:
+        """
+        Sets the value of the use_global_config key.
+        This value will have imported filtered decks use global add-on settings instead of individual filtered deck settings.
+        This key is not included in serialization (AsDict, FromDict), as those are used for per-deck configurations.
+
+        Raises:
+            ValueError: If the value in the data dictionary is invalid.
+
+        Returns:
+            bool: True if a newly-created filtered deck should use Anki add-on configuration instead of imported deck configuration, otherwise false.
+        """
+        if self.rawData["use_global_config"] is not None:
+            return self.rawData["use_global_config"]
+        else:
+            raise ValueError(f"Value for \"use_global_config\" is unexpected value: {self.rawData['use_global_config']}.")
+    
+    @UseGlobalConfig.setter
+    def UseGlobalConfig(self, useGlobalConfig: bool):
+        """
+        Sets the value of the use_global_config key.
+
+        Args:
+            useGlobalConfig (bool): The value to use for the use_global_config setting.
+        """
+        self.rawData["use_global_config"] = useGlobalConfig
+        self.WriteConfig()
+    
     def AsDict(self) -> dict:
         """
         Serialize current Configuration class to dict.

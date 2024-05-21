@@ -13,5 +13,6 @@
     "search_2" : {
         "order": 1,
         "card_limit": 9999
-    }
+    },
+    "use_global_config": false
 }
