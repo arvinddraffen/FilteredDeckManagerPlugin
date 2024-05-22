@@ -35,9 +35,9 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tabOptions">
+     <widget class="QWidget" name="tabDecks">
       <attribute name="title">
-       <string>Options</string>
+       <string>Decks</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
