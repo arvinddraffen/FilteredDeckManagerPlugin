@@ -1,3 +1,5 @@
+from ..Utilities import Configuration
+
 class Deck:
     """Represents a subset Deck object as exposed by the Anki API."""
     def __init__(self) -> None:
@@ -18,6 +20,7 @@ class Deck:
         self.totalIncludingChildren: int = None
         self.isFiltered: bool = None
         self.searchTerms: list[str] = None
+        self.config: Configuration.Configuration = Configuration.Configuration()
 
     @property
     def DeckId(self) -> int:
@@ -177,6 +180,26 @@ class Deck:
             terms = f"{terms} {self.searchTerms[1]}"
         
         return terms
+
+    @property
+    def Config(self) -> Configuration.Configuration:
+        """
+        Returns the Configuration for this filtered deck.
+
+        Returns:
+            Configuration.Configuration: The Configuration values used for creation of this filtered deck.
+        """
+        return self.config
+
+    @Config.setter
+    def Config(self, config: Configuration.Configuration):
+        """
+        Sets the Configuration for this filtered deck.
+
+        Args:
+            config (Configuration.Configuration): The Configuration values to use for creation of this filtered deck.
+        """
+        self.config = config
     
     def AsDict(self) -> dict:
         """
@@ -212,6 +235,7 @@ class Deck:
         if self.IsFiltered:
             deckAsDict["filtered"] = self.IsFiltered
             deckAsDict["search_terms"] = json.dumps(self.SearchTerms)
+            deckAsDict["config"] = json.dumps(self.Config.AsDict())
         
         return deckAsDict
     
@@ -249,6 +273,8 @@ class Deck:
             self.IsFiltered = deck["filtered"]
             if haveSearchTerms:
                 self.SearchTerms = json.loads(deck["search_terms"])
+                self.Config = Configuration.Configuration()
+                self.Config.FromDict(json.loads(deck["config"]))
         else:
             self.IsFiltered = False
 

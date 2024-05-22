@@ -6,9 +6,13 @@
         "hard": 0,
         "good": 0
     },
-    "orders": {
-        "search_1": 1,
-        "search_2": 1
+    "search_1": {
+        "order": 1,
+        "card_limit": 9999
     },
-    "card_limit": 9999
+    "search_2" : {
+        "order": 1,
+        "card_limit": 9999
+    },
+    "use_global_config": false
 }
