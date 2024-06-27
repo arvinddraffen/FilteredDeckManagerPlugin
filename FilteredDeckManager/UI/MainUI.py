@@ -64,13 +64,11 @@ class MainUI(QDialog):
             filteredDecksList (list[Deck.Deck]): The list of current filtered decks.
         """
         self.ui.tableWidgetFilteredDecks.setRowCount(len(filteredDecksList))
-        i = 0
-        for filteredDeck in filteredDecksList:
+        for i, filteredDeck in enumerate(filteredDecksList):
             checkboxSelected = QCheckBox(self.ui.tableWidgetFilteredDecks)
             self.ui.tableWidgetFilteredDecks.setCellWidget(i, Constants.UI_CONSTANTS.FilteredDeckTableWidgetColumns.SELECT_CHECKBOX.value, checkboxSelected)
             self.ui.tableWidgetFilteredDecks.setItem(i, Constants.UI_CONSTANTS.FilteredDeckTableWidgetColumns.DECK_NAME.value, QTableWidgetItem(filteredDeck.Name))
             self.ui.tableWidgetFilteredDecks.setItem(i, Constants.UI_CONSTANTS.FilteredDeckTableWidgetColumns.DECK_ID.value, QTableWidgetItem(filteredDeck.DeckId))
-            i += 1
         self.ui.tableWidgetFilteredDecks.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.ui.tableWidgetFilteredDecks.update()
     
@@ -111,8 +109,7 @@ class MainUI(QDialog):
             importedFilteredDecksList (list[Deck.Deck]): The list of filtered decks read in from the imported file.
         """
         self.ui.tableWidgetStagedForImportFilteredDecks.setRowCount(len(importedFilteredDecksList))
-        i = 0
-        for importedFilteredDeck in importedFilteredDecksList:
+        for i, importedFilteredDeck in enumerate(importedFilteredDecksList):
             if self.logger.LoggingSupported: self.logger.Logger.debug(f"Adding: {importedFilteredDeck.Name}")
             checkboxSelected = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
             checkboxUnsuspended = QCheckBox(self.ui.tableWidgetStagedForImportFilteredDecks)
@@ -132,7 +129,6 @@ class MainUI(QDialog):
                 searchTerms2Item = QTableWidgetItem(importedFilteredDeck.SearchTerms[1])
                 searchTerms2Item.setFlags(searchTerms2Item.flags() & ~Qt.ItemFlag.ItemIsEditable)
                 self.ui.tableWidgetStagedForImportFilteredDecks.setItem(i, Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.SEARCH_2.value, searchTerms2Item)
-            i += 1
         qconnect(self.ui.tableWidgetStagedForImportFilteredDecks.cellChanged, self.UpdateFilteredDeckName)
         self.ui.tableWidgetStagedForImportFilteredDecks.update()
         self.ui.tableWidgetStagedForImportFilteredDecks.show()
@@ -143,8 +139,7 @@ class MainUI(QDialog):
         """
         importedFilteredDecksList = self.manager.StagedFilteredDecksList
         selectedDecks = self.GetSelectedStagedFilteredDecks()
-        i = 0
-        for deck in importedFilteredDecksList:
+        for i, deck in enumerate(importedFilteredDecksList):
             if self.logger.LoggingSupported: self.logger.Logger.debug(f"Assessing Deck #{i}. Selected Decks: {selectedDecks}")
             if i in selectedDecks:
                 returnCode = self.manager.CreateFilteredDeck(
