@@ -32,5 +32,17 @@ class BACKEND_CONSTANTS:
     ANKI_VERSION_LOGGING_SUPPORT = 240400
     ADD_ON_VERSION = "1.0.0"
 
+class RETURN_CODES:
+    """
+    Constants used for standardized return codes.
+    """
+    class UI_CODES(Enum):
+        """
+        Return codes for UI elements.
+        """
+        SUCCESS = 0
+        DECK_NOT_UNIQUE_IMPORTED_LIST = 1
+        DECK_NOT_UNIQUE_EXISTING_LIST = 2
+
 if __name__ == "__main__":
     pass
