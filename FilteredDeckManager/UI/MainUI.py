@@ -154,11 +154,10 @@ class MainUI(QDialog):
                 )
 
                 if returnCode == Constants.RETURN_CODES.UI_CODES.DECK_NOT_UNIQUE_EXISTING_LIST:
-                    QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists in current filtered decks and will be skipped.")
+                    QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists in current filtered decks and will be skipped. Check the deck name and search query.")
                 if returnCode == Constants.RETURN_CODES.UI_CODES.DECK_NOT_UNIQUE_IMPORTED_LIST:
-                    QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} is duplicate with another  filtered deck in the import file and will be skipped.")
+                    QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} is duplicate with another filtered deck in the import file and will be skipped.")
                     
-            i += 1
         self.CleanupAndExit()
     
     def UpdateImportedFilteredDecks(self) -> None:
