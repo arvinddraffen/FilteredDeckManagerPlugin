@@ -147,45 +147,17 @@ class MainUI(QDialog):
         for deck in importedFilteredDecksList:
             if self.logger.LoggingSupported: self.logger.Logger.debug(f"Assessing Deck #{i}. Selected Decks: {selectedDecks}")
             if i in selectedDecks:
-                if self.manager.IsUnique(deck, importedFilteredDecksList, importList=True):
-                    if self.manager.IsUnique(deck, self.manager.FilteredDecksList):
-                        if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.INCLUDE_SUSPENDED_CHECKBOX.value).isChecked():
-                            cardsToUnsuspend = self.mainWindow.col.find_cards(deck.SearchTerms[0])
-                            self.mainWindow.col.sched.unsuspend_cards(cardsToUnsuspend)
+                returnCode = self.manager.CreateFilteredDeck(
+                    deck,
+                    self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.INCLUDE_SUSPENDED_CHECKBOX.value).isChecked(),
+                    self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked()
+                )
 
-                        # Initialize new filtered deck
-                        newFilteredDeck = FilteredDeckForUpdate()
-                        newFilteredDeckConfig = Configuration.Configuration()
-                        if self.manager.Configuration.UseGlobalConfig:
-                            newFilteredDeckConfig = self.manager.Configuration
-                        else:
-                            newFilteredDeckConfig = deck.Config
-                        newFilteredDeck.name = deck.Name
-                        newFilteredDeck.allow_empty = newFilteredDeckConfig.AllowEmpty
-                        newFilteredDeck.config.reschedule = newFilteredDeckConfig.Reschedule
-                        if not newFilteredDeckConfig.Reschedule:
-                            newFilteredDeck.config.preview_again_secs = newFilteredDeckConfig.IntervalAgain
-                            newFilteredDeck.config.preview_hard_secs = newFilteredDeckConfig.IntervalHard
-                            newFilteredDeck.config.preview_good_secs = newFilteredDeckConfig.IntervalGood
-                        
-                        terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=newFilteredDeckConfig.CardLimitSearch1,order=newFilteredDeckConfig.OrderBySearch1)]
-                        if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked():
-                            terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[0]} (is:new OR is:due)",limit=newFilteredDeckConfig.CardLimitSearch1,order=newFilteredDeckConfig.OrderBySearch1)]
-                        else:
-                            terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[0],limit=newFilteredDeckConfig.CardLimitSearch1,order=newFilteredDeckConfig.OrderBySearch1)]
-
-                        if len(deck.SearchTerms) == 2:
-                            if self.ui.tableWidgetStagedForImportFilteredDecks.cellWidget(i,Constants.UI_CONSTANTS.ImportedFilteredDeckTableWidgetColumns.APPEND_NEW_DUE_CHECKBOX.value).isChecked():
-                                terms = [FilteredDeckConfig.SearchTerm(search=f"{deck.searchTerms[1]} (is:new OR is:due)",limit=newFilteredDeckConfig.CardLimitSearch2,order=newFilteredDeckConfig.OrderBySearch2)]
-                            else:
-                                terms = [FilteredDeckConfig.SearchTerm(search=deck.searchTerms[1],limit=newFilteredDeckConfig.CardLimitSearch2,order=newFilteredDeckConfig.OrderBySearch2)]
-
-                        newFilteredDeck.config.search_terms.extend(terms)
-                        add_or_update_filtered_deck(parent=self.mainWindow, deck=newFilteredDeck).run_in_background()
-                    else:
-                        QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists and will be skipped.")
-                else:
-                    QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists and will be skipped.")
+                if returnCode == Constants.RETURN_CODES.UI_CODES.DECK_NOT_UNIQUE_EXISTING_LIST:
+                    QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} already exists in current filtered decks and will be skipped.")
+                if returnCode == Constants.RETURN_CODES.UI_CODES.DECK_NOT_UNIQUE_IMPORTED_LIST:
+                    QMessageBox.warning(self, "Failed Uniqueness Check", f"The deck {deck.Name} is duplicate with another  filtered deck in the import file and will be skipped.")
+                    
             i += 1
         self.CleanupAndExit()
     

@@ -1,8 +1,10 @@
 from re import search
 from .Models import Deck
 
-from .Utilities import Logger, Configuration
+from .Utilities import AnkiApiHandler, Configuration, Constants, Logger
 import logging
+
+from anki.scheduler import FilteredDeckForUpdate
 
 class FilteredDeckManager:
     """
@@ -23,6 +25,7 @@ class FilteredDeckManager:
         self.mainWindow = mw
         self.logger = Logger.Logger(mw)
         self.configuration = Configuration.Configuration(mw.addonManager.addonFromModule(__name__))
+        self.ankiApiHandler = AnkiApiHandler.AnkiApiHandler()
 
     def _GetAllDecks(self):
         """
@@ -140,6 +143,37 @@ class FilteredDeckManager:
         
         self.stagedFilteredDecksList = importedDecks
         return importedDecks
+
+    def CreateFilteredDeck(self, deck: Deck.Deck, includeSuspended: bool, appendNewDue: bool) -> Constants.RETURN_CODES.UI_CODES:
+        """
+        Creates a filtered deck using the Anki backend based on the provided parameters.
+
+        Args:
+            deck (Deck.Deck): The Deck to use for Anki Filtered Deck creation.
+            includeSuspended (bool): Set true if suspended cards should be unsuspended on deck creation.
+            appendNewDue (bool): Set true if `(is:new OR is:due)` should be appended on filtered deck creation, useful for a filtered deck to be recreated daily.
+
+        Returns:
+            Constants.RETURN_CODES.UI_CODES: Enum value corresponding to success or failure state.
+        """
+        from aqt.operations.scheduling import add_or_update_filtered_deck
+        if self.IsUnique(deck, self.StagedFilteredDecksList, importList=True):
+            if self.IsUnique(deck, self.FilteredDecksList):
+                if includeSuspended:
+                    self.ankiApiHandler.UnsuspendCardsBySearchTerm(deck.SearchTerms[0])
+                    if len(deck.SearchTerms) == 2:
+                        self.ankiApiHandler.UnsuspendCardsBySearchTerm(deck.SearchTerms[1])
+                
+                newDeckConfig = self.Configuration if self.Configuration.UseGlobalConfig else deck.Config
+                newDeck = self.ankiApiHandler.PrepareNewFilteredDeckForUpdate(deck, newDeckConfig, appendNewDue)
+                
+                add_or_update_filtered_deck(parent=self.mainWindow, deck=newDeck).run_in_background()
+                return Constants.RETURN_CODES.UI_CODES.SUCCESS      
+            else:
+                return Constants.RETURN_CODES.UI_CODES.DECK_NOT_UNIQUE_EXISTING_LIST
+        else:
+            return Constants.RETURN_CODES.UI_CODES.DECK_NOT_UNIQUE_IMPORTED_LIST
+
 
     def IsUnique(self, deck: Deck.Deck, comparisonList: list[Deck.Deck], importList = False, checkNameOnly = False) -> bool:
         """
