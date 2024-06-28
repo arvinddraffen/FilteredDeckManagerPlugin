@@ -9,6 +9,7 @@
 ################################################################################
 
 from aqt.qt import QTabWidget, QVBoxLayout, QLabel, QWidget, QFont, QGroupBox, QTableWidget, QTableWidgetItem, QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy, QCoreApplication, QMetaObject, QAbstractItemView, QTextBrowser
+
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
@@ -27,11 +28,11 @@ class Ui_Dialog(object):
 
         self.tabWidget = QTabWidget(Dialog)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabOptions = QWidget()
-        self.tabOptions.setObjectName(u"tabOptions")
-        self.verticalLayout_4 = QVBoxLayout(self.tabOptions)
+        self.tabDecks = QWidget()
+        self.tabDecks.setObjectName(u"tabDecks")
+        self.verticalLayout_4 = QVBoxLayout(self.tabDecks)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.groupBox = QGroupBox(self.tabOptions)
+        self.groupBox = QGroupBox(self.tabDecks)
         self.groupBox.setObjectName(u"groupBox")
         self.verticalLayout_2 = QVBoxLayout(self.groupBox)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -51,7 +52,7 @@ class Ui_Dialog(object):
 
         self.verticalLayout_4.addWidget(self.groupBox)
 
-        self.groupBoxExport = QGroupBox(self.tabOptions)
+        self.groupBoxExport = QGroupBox(self.tabDecks)
         self.groupBoxExport.setObjectName(u"groupBoxExport")
         self.horizontalLayout_5 = QHBoxLayout(self.groupBoxExport)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
@@ -82,7 +83,7 @@ class Ui_Dialog(object):
 
         self.verticalLayout_4.addWidget(self.groupBoxExport)
 
-        self.groupBoxImport = QGroupBox(self.tabOptions)
+        self.groupBoxImport = QGroupBox(self.tabDecks)
         self.groupBoxImport.setObjectName(u"groupBoxImport")
         self.verticalLayout_3 = QVBoxLayout(self.groupBoxImport)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -124,7 +125,7 @@ class Ui_Dialog(object):
 
         self.verticalLayout_4.addWidget(self.groupBoxImport)
 
-        self.tabWidget.addTab(self.tabOptions, "")
+        self.tabWidget.addTab(self.tabDecks, "")
         self.tabAbout = QWidget()
         self.tabAbout.setObjectName(u"tabAbout")
         self.verticalLayout_5 = QVBoxLayout(self.tabAbout)
@@ -200,7 +201,7 @@ class Ui_Dialog(object):
         ___qtablewidgetitem8.setText(QCoreApplication.translate("Dialog", u"Search 1", None));
         ___qtablewidgetitem9 = self.tableWidgetStagedForImportFilteredDecks.horizontalHeaderItem(6)
         ___qtablewidgetitem9.setText(QCoreApplication.translate("Dialog", u"Search 2", None));
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabOptions), QCoreApplication.translate("Dialog", u"Options", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabDecks), QCoreApplication.translate("Dialog", u"Decks", None))
         self.labelWrittenBy.setText(QCoreApplication.translate("Dialog", u"Written by:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabAbout), QCoreApplication.translate("Dialog", u"About", None))
         self.buttonOkay.setText(QCoreApplication.translate("Dialog", u"Okay", None))
