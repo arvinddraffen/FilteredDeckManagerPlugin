@@ -1,12 +1,9 @@
-from aqt import QCheckBox, QTableWidget
+from aqt import QCheckBox
 
-from FilteredDeckManager.Utilities import Configuration
 from .ui_form import Ui_Dialog
 from ..FilteredDeckManager import FilteredDeckManager
 from ..Models import Deck
 from ..Utilities import Constants, Logger
-
-import logging
 
 from aqt.qt import QDialog
 from aqt.qt import QTableWidgetItem
@@ -16,10 +13,6 @@ from aqt.qt import QMessageBox
 from aqt.qt import QAbstractItemView
 from aqt.qt import Qt
 from aqt.qt import QUrl
-
-from anki.scheduler import FilteredDeckForUpdate
-from aqt.operations.scheduling import add_or_update_filtered_deck
-from anki.decks import FilteredDeckConfig
 
 from aqt.utils import qconnect
 

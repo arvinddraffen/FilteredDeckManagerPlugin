@@ -1,5 +1,4 @@
 from aqt import mw
-from anki.decks import FilteredDeckConfig
 
 class Configuration:
     """

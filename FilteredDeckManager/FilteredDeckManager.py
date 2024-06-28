@@ -1,10 +1,6 @@
-from re import search
 from .Models import Deck
 
 from .Utilities import AnkiApiHandler, Configuration, Constants, Logger
-import logging
-
-from anki.scheduler import FilteredDeckForUpdate
 
 class FilteredDeckManager:
     """
