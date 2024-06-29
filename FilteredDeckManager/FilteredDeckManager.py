@@ -1,6 +1,7 @@
 from .Models import Deck
-
 from .Utilities import AnkiApiHandler, Configuration, Constants, Logger
+
+from aqt import mw
 
 class FilteredDeckManager:
     """
@@ -11,16 +12,16 @@ class FilteredDeckManager:
     """
     from anki.collection import Collection
     
-    def __init__(self, mw) -> None:
+    def __init__(self) -> None:
         """
         Initializes a FilteredDeckManager.
 
         Args:
             mw: Anki MainWindow
         """
-        self.mainWindow = mw
-        self.logger = Logger.Logger(mw)
-        self.configuration = Configuration.Configuration(mw.addonManager.addonFromModule(__name__))
+        self.logger = Logger.Logger()
+        if mw is not None:
+            self.configuration = Configuration.Configuration(mw.addonManager.addonFromModule(__name__))
         self.ankiApiHandler = AnkiApiHandler.AnkiApiHandler()
 
     def _GetAllDecks(self):
@@ -29,7 +30,7 @@ class FilteredDeckManager:
         """
         from google.protobuf import json_format
         self.allDecksList = []
-        for deck in self.mainWindow.col.sched.deck_due_tree().children:
+        for deck in mw.col.sched.deck_due_tree().children:
             serialized = json_format.MessageToDict(deck)
             newDeck = Deck.Deck()
             newDeck.FromDict(serialized, haveSearchTerms=False)
@@ -41,7 +42,7 @@ class FilteredDeckManager:
         """
         Test function, returns the total card count.
         """
-        return self.mainWindow.col.card_count()
+        return mw.col.card_count()
 
     def _InitializeFilteredDecksList(self):
         """
@@ -50,7 +51,7 @@ class FilteredDeckManager:
         self.filteredDecksList = []
         for deck in self.allDecksList:
             if deck.IsFiltered:
-                deckConfig = self.mainWindow.col.sched.get_or_create_filtered_deck(deck_id=int(deck.DeckId)).config
+                deckConfig = mw.col.sched.get_or_create_filtered_deck(deck_id=int(deck.DeckId)).config
                 deck.Config.Reschedule = deckConfig.reschedule
                 if not deckConfig.reschedule:
                     deck.Config.IntervalAgain = deckConfig.preview_again_secs
@@ -67,7 +68,7 @@ class FilteredDeckManager:
                             deck.Config.CardLimitSearch2 = term.limit
                         else:
                             pass
-                deck.Config.AllowEmpty = self.mainWindow.col.sched.get_or_create_filtered_deck(deck_id=int(deck.DeckId)).allow_empty
+                deck.Config.AllowEmpty = mw.col.sched.get_or_create_filtered_deck(deck_id=int(deck.DeckId)).allow_empty
                 self.filteredDecksList.append(deck)
 
     @property
@@ -163,7 +164,7 @@ class FilteredDeckManager:
                 newDeckConfig = self.Configuration if self.Configuration.UseGlobalConfig else deck.Config
                 newDeck = self.ankiApiHandler.PrepareNewFilteredDeckForUpdate(deck, newDeckConfig, appendNewDue)
                 
-                add_or_update_filtered_deck(parent=self.mainWindow, deck=newDeck).run_in_background()
+                add_or_update_filtered_deck(parent=mw, deck=newDeck).run_in_background()
                 return Constants.RETURN_CODES.UI_CODES.SUCCESS      
             else:
                 return Constants.RETURN_CODES.UI_CODES.DECK_NOT_UNIQUE_EXISTING_LIST

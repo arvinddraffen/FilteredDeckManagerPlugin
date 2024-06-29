@@ -2,13 +2,15 @@ import logging
 from .Constants import BACKEND_CONSTANTS
 
 from anki import utils
+from aqt import mw
 
 class Logger:
     """
     Handles logging for FilteredDeckManager. Support for add-on logging was added in Anki desktop version 240400.
     """
-    def __init__(self, mw) -> None:
-        self.logger = getattr(mw.addonManager, "getLogger", logging.getLogger)(__name__.split('.', 1)[0])
+    def __init__(self) -> None:
+        if mw is not None:
+            self.logger = getattr(mw.addonManager, "getLogger", logging.getLogger)(__name__.split('.', 1)[0])
         self.currentAnkiVersion = utils.int_version()
     
     @property

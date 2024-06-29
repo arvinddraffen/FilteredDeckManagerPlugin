@@ -37,8 +37,8 @@ class MainUI(QDialog):
         self.ui.tableWidgetFilteredDecks.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.ui.tableWidgetStagedForImportFilteredDecks.hide()
         self.mainWindow = mw
-        self.manager = FilteredDeckManager(self.mainWindow)
-        self.logger = Logger.Logger(mw)
+        self.manager = FilteredDeckManager()
+        self.logger = Logger.Logger()
         self.SetupSignalsSlots()
         self.SetupAboutTab()
     
