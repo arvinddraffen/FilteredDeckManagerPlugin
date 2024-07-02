@@ -13,11 +13,53 @@ class Configuration:
         """
         self.addonPath = addonPath
         if addonPath:   # initializing global add-on config, so get add-on path from Anki add-on API
-            self.rawData = mw.addonManager.getConfig(self.addonPath)
+            if mw is not None:
+                self.rawData = mw.addonManager.getConfig(self.addonPath)
+            else:
+                self.rawData = {}
         else:
             self.rawData = {}
             self.rawData["search_1"] = {}
         self.hasSecondSearchTerm = False
+    
+    def __eq__(self, other: object) -> bool:
+        """
+        Compares Configuration to another object instance by member variables.
+
+        Args:
+            other (object): The other object to compare to.
+
+        Returns:
+            bool: True if the member variables of self and other are equal, otherwise False.
+        """
+        if not isinstance(other, Configuration):
+            return False
+        if self.AllowEmpty != other.AllowEmpty:
+            return False
+        if self.Reschedule != other.Reschedule:
+            return False
+        # if self.IntervalAgain != other.IntervalAgain:
+        #     return False
+        # if self.IntervalHard != other.IntervalHard:
+        #     return False
+        # if self.IntervalGood != other.IntervalGood:
+        #     return False
+        if self.OrderBySearch1 != other.OrderBySearch1:
+            return False
+        if "search_2" in self.rawData and "search_2" in other.rawData:  # only run these tests if search_2 present in both
+            if self.OrderBySearch2 != other.OrderBySearch2:
+                return False
+            if self.CardLimitSearch1 != other.CardLimitSearch1:
+                return False
+            if self.CardLimitSearch2 != other.CardLimitSearch2:
+                return False
+        else:
+            if "search_2" in self.rawData != "search_2" in other.rawData:
+                return False
+        # if self.UseGlobalConfig != other.UseGlobalConfig:
+        #     return False
+        
+        return True
 
     @property
     def AllowEmpty(self) -> bool:
@@ -77,7 +119,8 @@ class Configuration:
         """
         Writes the configuration dictionary to the corresponding settings file.
         """
-        mw.addonManager.writeConfig(self.addonPath, self.rawData)
+        if mw is not None:
+            mw.addonManager.writeConfig(self.addonPath, self.rawData)
     
     @property
     def IntervalAgain(self) -> int:
