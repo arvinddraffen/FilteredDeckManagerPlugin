@@ -1,0 +1,12 @@
+[
+  {
+    "deckId": 33,
+    "name": "Test Name",
+    "reviewCount": 20,
+    "totalInDeck": 20,
+    "totalIncludingChildren": 20,
+    "filtered": true,
+    "search_terms": "[\"tag:test_tag\"]",
+    "config": "{\"search_1\": {\"order\": 8, \"card_limit\": 100}, \"allow_empty\": false, \"reschedule\": true}"
+  }
+]

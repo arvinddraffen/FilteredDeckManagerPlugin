@@ -1,3 +1,4 @@
+from fileinput import filename
 import logging
 from .Constants import BACKEND_CONSTANTS
 
@@ -11,6 +12,10 @@ class Logger:
     def __init__(self) -> None:
         if mw is not None:
             self.logger = getattr(mw.addonManager, "getLogger", logging.getLogger)(__name__.split('.', 1)[0])
+        # else:
+        #     from pathlib import Path
+        #     self.logger = logging.getLogger(__name__)
+        #     logging.basicConfig(filename=Path(__file__).parent.parent.parent.joinpath("tests").joinpath("data").joinpath("test_log.txt"))
         self.currentAnkiVersion = utils.int_version()
     
     @property
