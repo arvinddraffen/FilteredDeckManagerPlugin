@@ -2,8 +2,8 @@ from aqt import mw
 from anki.scheduler import FilteredDeckForUpdate
 from anki.decks import FilteredDeckConfig
 
-from FilteredDeckManager.Models import Deck
-from FilteredDeckManager.Utilities import Configuration
+from ..Models import Deck
+from ..Utilities import Configuration
 
 class AnkiApiHandler:
     """
