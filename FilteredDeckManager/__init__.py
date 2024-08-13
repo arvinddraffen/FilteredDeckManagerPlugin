@@ -16,4 +16,5 @@ def launch() -> None:
 action = QAction("Filtered Deck Manager", mw)
 qconnect(action.triggered, launch)
 # and add it to the tools menu
-mw.form.menuTools.addAction(action)
+if mw is not None:
+    mw.form.menuTools.addAction(action)

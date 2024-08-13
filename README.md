@@ -23,3 +23,8 @@ An option is provided for Filtered Decks to be renamed on import, which can be d
 #### Detecting Duplicate Decks
 On import, the add-on will check against existing filtered decks and other decks in the imported file to prevent import of a duplicate deck. The criteria used are an *exact match* of tags and the name of the deck.
 * Note that this is an exact match of tags, and will not individually check tags (so therefore, the same set of tags in a different order would be considered a "different" deck). This behavior may be updated in the future, but this is the behavior on initial release.
+
+### Configuration
+For more detailed configuration options, `Filtered Deck Manager` has a overall add-on configuration as well as per-deck configuration. Add-on level configuration is modified through Anki Desktop, and deck configuration options are set on deck export and contained with the exported `.json` file.
+
+In order to decide whether to use global add-on configurations, or accept the ones contained within a deck on import, modify the `use_global_config` option in the add-on settings.

@@ -1,2 +1,4 @@
 FilteredDeckManager/__pycache__/*
 venv/*
+test_env/*
+*.pyc

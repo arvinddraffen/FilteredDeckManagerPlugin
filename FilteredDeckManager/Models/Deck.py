@@ -21,6 +21,51 @@ class Deck:
         self.isFiltered: bool = None
         self.searchTerms: list[str] = None
         self.config: Configuration.Configuration = Configuration.Configuration()
+    
+    def __eq__(self, other: object) -> bool:
+        """
+        Compares Deck to another object instance by member variables.
+
+        Args:
+            other (object): The other object to compare to.
+
+        Returns:
+            bool: True if the member variables of the self and other are equal, otherwise False.
+        """
+        if not isinstance(other, Deck):
+            return False
+        if self.DeckId != other.DeckId:
+            return False
+        if self.Name != other.Name:
+            return False
+        if self.Level != other.Level:
+            return False
+        if self.ReviewCount != other.ReviewCount:
+            return False
+        if self.LearnCount != other.LearnCount:
+            return False
+        if self.NewCount != other.NewCount:
+            return False
+        if self.IntradayLearning != other.IntradayLearning:
+            return False
+        if self.InterdayLearningUncapped != other.InterdayLearningUncapped:
+            return False
+        if self.NewUncapped != other.NewUncapped:
+            return False
+        if self.ReviewUncapped != other.ReviewUncapped:
+            return False
+        if self.TotalInDeck != other.TotalInDeck:
+            return False
+        if self.TotalIncludingChildren != other.TotalIncludingChildren:
+            return False
+        if self.IsFiltered != other.IsFiltered:
+            return False
+        if self.SearchTerms != other.SearchTerms:
+            return False
+        if self.Config != other.Config:
+            return False
+
+        return True
 
     @property
     def DeckId(self) -> int:
