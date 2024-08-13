@@ -30,7 +30,7 @@ class BACKEND_CONSTANTS:
     """
 
     ANKI_VERSION_LOGGING_SUPPORT = 240400
-    ADD_ON_VERSION = "1.0.0"
+    ADD_ON_VERSION = "2.0.0"
 
 class RETURN_CODES:
     """
